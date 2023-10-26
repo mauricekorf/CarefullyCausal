@@ -17,6 +17,14 @@ Imports:
     boot (>= 1.3.28),
     ggplot2 (>= 3.4.1),
     ggridges (>= 0.5.4)
+depends:
+    CBPS (>= 0.23),
+    survey (>= 4.1.1),
+    stats (>= 4.2.2),
+    cobalt (>= 4.5.1),
+    boot (>= 1.3.28),
+    ggplot2 (>= 3.4.1),
+    ggridges (>= 0.5.4)
 RoxygenNote: 7.2.3
 URL: https://github.com/mauricekorf/CarefullyCausal
 BugReports: https://github.com/mauricekorf/CarefullyCausal/issues
