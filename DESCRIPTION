@@ -1,0 +1,20 @@
+Package: CarefullyCausal
+Type: Package
+Title: Provides estimates, assumptions and diagnostics for fixed-exposure causal analyses
+Version: 0.1.0
+Authors@R: c(person("Maurice", "Korf", email = "m.korf@erasmusmc.nl", role = c("aut", "cre")),
+             person("Jeremy", "Labrecque", email = "j.labrecque@erasmusmc.nl", role = "aut"))
+Description: This package provides the estimand, estimators, assumptions and diagnostics
+      for causal analyses in a fixed-exposure setting using observational data.
+      It supports: outcome regression, IPTW, S-and-T-standardization and TMLE.
+License: `use_mit_license()`
+Encoding: UTF-8
+Imports:
+    CBPS (>= 0.23),
+    survey (>= 4.1.1),
+    stats (>= 4.2.2),
+    cobalt (>= 4.5.1),
+    boot (>= 1.3.28),
+    ggplot2 (>= 3.4.1),
+    ggridges (>= 0.5.4)
+RoxygenNote: 7.2.3
