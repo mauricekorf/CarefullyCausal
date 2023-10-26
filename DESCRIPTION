@@ -18,3 +18,5 @@ Imports:
     ggplot2 (>= 3.4.1),
     ggridges (>= 0.5.4)
 RoxygenNote: 7.2.3
+URL: https://github.com/mauricekorf/CarefullyCausal
+BugReports: https://github.com/mauricekorf/CarefullyCausal/issues
