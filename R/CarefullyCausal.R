@@ -34,6 +34,7 @@
 #' @import ggplot2
 #' @import stats
 #' @import ggridges
+#' @import SuperLearner
 #'
 #' @examples
 CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=FALSE, interaction=NULL,boot1=100,boot2=100,standardization=TRUE,bins=10,confidence="norm",result_type="log",
