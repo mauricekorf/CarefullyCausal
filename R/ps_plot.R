@@ -1,10 +1,9 @@
-#' Propensity score plots
+#' Propensity Score Density Plots
 #'
-#' Provides all relevant plots with respect to the reference exposure category. Applicable when exposure is discrete.
-#'
+#' Provides propensity score density plots with respect to the reference exposure category. Applicable when exposure is discrete.
 #' @param h Input a CarefullyCausal object
 #'
-#' @return Propensity score plots
+#' @return Propensity score density plots per contrasts with respect to the reference exposure level
 #' @export
 #'
 #' @examples
