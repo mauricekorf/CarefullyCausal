@@ -2,16 +2,16 @@
 % Please edit documentation in R/ps_plot.R
 \name{ps.plot}
 \alias{ps.plot}
-\title{#Propensity score plots}
+\title{Propensity Score Density Plots}
 \usage{
 ps.plot(h)
 }
 \arguments{
-\item{h}{Input the saved output object}
+\item{h}{Input a CarefullyCausal object}
 }
 \value{
-Propensity score plots
+Propensity score density plots per contrasts with respect to the reference exposure level
 }
 \description{
-When exposure is discrete it provides all relevant plots with respect to the reference exposure category
+Provides propensity score density plots with respect to the reference exposure category. Applicable when exposure is discrete.
 }
