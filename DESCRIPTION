@@ -17,7 +17,7 @@ Imports:
     boot (>= 1.3.28),
     ggplot2 (>= 3.4.1),
     ggridges (>= 0.5.4)
-depends:
+Depends:
     CBPS (>= 0.23),
     survey (>= 4.1.1),
     stats (>= 4.2.2),

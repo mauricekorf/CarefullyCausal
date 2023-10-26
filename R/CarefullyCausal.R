@@ -26,13 +26,20 @@
 #'
 #' @return Prints the estimand, estimates, assumptions and diagnostics
 #' @export
+#' @import CBPS
+#' @import survey
+#' @import stats
+#' @import cobalt
+#' @import boot
+#' @import ggplot2
+#' @import stats
+#' @import ggridges
 #'
 #' @examples
 CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=FALSE, interaction=NULL,boot1=100,boot2=100,standardization=TRUE,bins=10,confidence="norm",result_type="log",
                             outcome_SL_library=c("SL.glm"),ps_SL_library=NULL,ps_method="SL", ps_formula=NULL, ps_tmle=NULL,
                             ip_weights_iptw=NULL)
 {
-
 
 
 
