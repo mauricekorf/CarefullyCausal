@@ -79,5 +79,5 @@ log-odds (\code{"log"}), odds ratio (\code{"or"}) or risk ratio (\code{"rr"}).
 \if{html}{\out{<br>}}
 \if{html}{\out{<br>}}
 The nature of the exposure variable determines what estimators are deployed.
-Currently, TMLE is not yet supported for multi-value exposure and when the exposure is continuous only outcome regression and IPTW are deployed.
+Currently, TMLE is not yet supported for a multi-value exposure and when the exposure is continuous only outcome regression and IPTW are deployed.
 }
