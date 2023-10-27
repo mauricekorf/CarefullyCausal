@@ -19,5 +19,6 @@ Imports:
     ggridges (>= 0.5.4),
     SuperLearner (>= 2.0.28.1)
 RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
 URL: https://github.com/mauricekorf/CarefullyCausal
 BugReports: https://github.com/mauricekorf/CarefullyCausal/issues

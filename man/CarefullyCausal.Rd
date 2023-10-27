@@ -26,48 +26,58 @@ CarefullyCausal(
 )
 }
 \arguments{
-\item{formula}{Specify your formula as in (Y ~ X + W)}
+\item{formula}{specify your formula as in \code{Y ~ X + W} with \verb{Y=outcome of interest (numeric vector)}, \verb{X=exposure (factor or continuous)} and \verb{W=set of variables to adjust for}}
 
-\item{data}{input your data set}
+\item{data}{input your data frame}
 
-\item{family}{Can be "gaussian" or "binomial" and relates to the outcome of interest (dependent variable)}
+\item{family}{a description of the error distribution and link function. It expects a character string, either \code{"gaussian"} or \code{"binomial"} depending on specified outcome of interest}
 
-\item{exposure}{Specify your exposure variable name (e.g. "treatment")}
+\item{exposure}{specify the exposure variable as character string (e.g.\code{"treatment"})}
 
-\item{pvalue}{TRUE or FALSE, by default is FALSE and does not show the p-value}
+\item{pvalue}{\code{TRUE} or \code{FALSE}, by default is \code{FALSE} and does not show the p-value}
 
-\item{interaction}{Specify the interaction you want to include betwen the exposure and covariate. This is an argument for S-standardization.}
+\item{interaction}{Interactions that are included specifically in the S-standardization method. These are interactions
+between covariates and the exposure. General interaction terms or effect modifications should be specified in the \code{formula} argument}
 
-\item{boot1}{The number of bootstrap iterations to get the standard error for S-and-T-standardization}
+\item{boot1}{the number of bootstrap iterations to get the standard error for S-standardization and T-standardization. By default set to 100 iterations}
 
-\item{boot2}{The number of bootstrap iterations to get the p-value for S-and-T-standardization}
+\item{boot2}{the number of bootstrap iterations to get the p-value for S-standardization and T-standardization. By default set to 100 iterations}
 
-\item{standardization}{TRUE or FALSE, to show the S-and-T-standardization. Computationally more intensive due to bootstrap.}
+\item{standardization}{\code{TRUE} or \code{FALSE}, to show S-standardization and T-standardization estimators. Default is \code{TRUE}, but computationally intensive due to bootstrap and thus can be set to \code{FALSE}}
 
-\item{bins}{numeric, relevant when exposure is continuous. The number of bins your exposure will be categorized into.}
+\item{bins}{\code{integer}, only relevant when exposure is continuous. Specify number of bins your exposure will be categorized into for Ridgeline plot. Default is 10 bins}
 
-\item{confidence}{Can be "norm" or "bca", which correspond to a normal confidence interval or bias-adjusted and corrected confidence interval.}
+\item{confidence}{can be \code{norm} or \code{bca}, which correspond to a normal confidence interval or bias-corrected and accelerated confidence interval. Default is \code{norm}}
 
-\item{result_type}{Can be "log" (default), "rr" (risk ratio) or "or" (odd ratio)}
+\item{result_type}{estimates table can be shown in terms of \code{"log"} (log odds-ratio, default), \code{"rr"} (risk ratio) or \code{"or"} (odds ratio)}
 
-\item{outcome_SL_library}{Specify what estimators to use within Superlearner to estimate the outcome (g-estimation step within TMLE)}
+\item{outcome_SL_library}{Specify what estimators to use within Superlearner, when using SuperLearner for g-estimation step in TMLE. Default is \code{SL.glm}}
 
-\item{ps_SL_library}{Specify what estimators to use within Superlearner to estimate the propensity scores within TMLE}
+\item{ps_SL_library}{Specify what estimators to use within Superlearner to estimate the propensity scores within TMLE. Default is same library as specified in \code{outcome_SL_library}}
 
-\item{ps_method}{Can be "SL" (default) or "cbps" if ps_tmle is NULL.}
+\item{ps_method}{Specify what method to use for propensity score estimation in TMLE. Expects a character string \code{"SL"} (default) or \code{"cbps"} if \code{ps_tmle=NULL}. When user inputs own propensity scores, \code{ps_tmle!=NULL}, this argument is ignored}
 
-\item{ps_formula}{Specify the formula to estimate the propensity scores within TMLE. If empty, is uses same formula that is specified under argument formula with dependent variable being exposure.}
+\item{ps_formula}{Specify the formula to estimate the propensity scores in TMLE. If \code{NULL}, it uses same formula that is specified under argument \code{formula} with the \code{exposure} variable being the outcome variable}
 
-\item{ps_tmle}{It is NULL by default, user can input own estimated propensity scores. It is an n x 1 vector.}
+\item{ps_tmle}{Input own estimated propensity scores. Expects a vector with the propensity scores. By default this is \code{NULL} and are estimated using method specified at \code{ps_method}}
 
-\item{ip_weights_iptw}{user-specified IP weights that are used in IPTW.}
+\item{ip_weights_iptw}{Input own estimated IP weights. Expects a vector containing the IP weights. By default this is \code{NULL} and are estimated using \code{CBPS}}
 }
 \value{
-Prints the estimand, estimates, assumptions and diagnostics
+It prints the causal estimand, causal estimates (output table), causal assumptions and relevant diagnostics
 }
 \description{
-Performs outcome regression, IPTW, S-standardization, T-standardization and TMLE.
-It provides the estimand, estimates, discusses the assumptions and provides diagnostics including interpretations.
-It can be used when having a fixed-exposure, outcome is either dichotomous or continuous and when
-exposure is dichotomous, multi-value or continuous.
+\code{CarefullyCausal} is used to fit outcome regression, inverse probability treatment weighting (IPTW), S-standardization, T-standardization and TMLE.
+It prints the causal estimand, causal estimates from the different estimators, causal assumptions and relevant diagnostics.
+}
+\details{
+\code{CarefullyCausal} can be used in a setting with a fixed-exposure (not time-varying). The outcome of interest can
+be dichotomous (binomial) or continuous (gaussian) but must be a numeric vector in both settings.
+The exposure of interest can be dichotomous, multi-value (maximum 4 levels) or continuous.
+When the outcome is dichotomous, the user can specify the argument \code{result_type=""} in order to specify if the output estimates should be in terms of
+log-odds (\code{"log"}), odds ratio (\code{"or"}) or risk ratio (\code{"rr"}).
+\if{html}{\out{<br>}}
+\if{html}{\out{<br>}}
+The nature of the exposure variable determines what estimators are deployed.
+Currently, TMLE is not yet supported for multi-value exposure and when the exposure is continuous only outcome regression and IPTW are deployed.
 }
