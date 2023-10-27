@@ -1,6 +1,6 @@
 #' CarefullyCausal
 #'
-#' \pkg{CarefullyCausal} performs outcome regression, IPTW, S-standardization, T-standardization and TMLE.
+#' \code{CarefullyCausal} performs outcome regression, IPTW, S-standardization, T-standardization and TMLE.
 #' It provides the estimand, estimates, discusses the assumptions and provides diagnostics including interpretations.
 #' It can be used when having a fixed-exposure, outcome is either dichotomous or continuous and when
 #' exposure is dichotomous, multi-value or continuous.
