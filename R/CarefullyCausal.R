@@ -37,7 +37,7 @@
 #' @param ip_weights_iptw Input own estimated IP weights. Expects a vector containing the IP weights. By default this is `NULL` and are estimated using `CBPS`
 #'
 #' @return It prints the causal estimand, causal estimates (output table), causal assumptions and relevant diagnostics
-#' @export
+#'
 #' @import CBPS
 #' @import survey
 #' @import stats
@@ -48,7 +48,9 @@
 #' @import ggridges
 #' @import SuperLearner
 #'
+#'
 #' @examples
+#' @export
 CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=FALSE, interaction=NULL,boot1=100,boot2=100,standardization=TRUE,bins=10,confidence="norm",result_type="log",
                             outcome_SL_library=c("SL.glm"),ps_SL_library=NULL,ps_method="SL", ps_formula=NULL, ps_tmle=NULL,
                             ip_weights_iptw=NULL)
