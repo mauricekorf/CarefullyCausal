@@ -210,7 +210,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=FAL
     class(output) <- c(output$class, c("cccont"))
     return(output)
 
-    printcont.cccont(output)
+    print.cccont(output)
 
 
 

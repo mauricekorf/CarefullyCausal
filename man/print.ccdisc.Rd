@@ -2,13 +2,16 @@
 % Please edit documentation in R/print_discrete.R
 \name{print.ccdisc}
 \alias{print.ccdisc}
-\title{Output print function}
+\title{Output print function (discrete exposure)}
 \usage{
 \method{print}{ccdisc}(h)
 }
 \arguments{
 \item{h}{CarefullyCausal object}
 }
+\value{
+Prints all output of Carefully Causal object
+}
 \description{
-Output print function
+Output print function (discrete exposure)
 }
