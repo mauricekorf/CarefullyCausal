@@ -1,8 +1,8 @@
-#' Output print function
+#' Output print function (discrete exposure)
 #'
 #' @param h CarefullyCausal object
 #'
-#' @return
+#' @return Prints all output of Carefully Causal object
 #' @export
 #'
 #' @examples
