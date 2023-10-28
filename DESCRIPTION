@@ -6,7 +6,7 @@ Authors@R: c(person("Maurice", "Korf", email = "m.korf@erasmusmc.nl", role = c("
              person("Jeremy", "Labrecque", email = "j.labrecque@erasmusmc.nl", role = "aut"))
 Description: This package provides the estimand, estimators, assumptions and diagnostics
       for causal analyses in a fixed-exposure setting using observational data.
-      It supports: outcome regression, IPTW, S-and-T-standardization and TMLE.
+      It supports: outcome regression, IPTW, S-standardization, T-standardization and TMLE.
 License: `use_mit_license()`
 Encoding: UTF-8
 Imports:
