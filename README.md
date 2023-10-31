@@ -6,18 +6,24 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of CarefullyCausal is to provide a practical guide for doing
-causal analyses. CarefullyCausal can be used when there is a
-fixed-exposure, meaning it does not vary over time. This function prints
-the following output: the estimand, provides a table with the causal
-effect estimates and discusses the causal assumptions.
+The goal of CarefullyCausal is to provide the user a practical guide
+when doing causal analyses. Particularly, CarefullyCausal provides the
+user the estimand, a table of causal estimates, a discussion on the
+causal assumptions, relevant diagnostics and
+interpretations/explanations. The key aspects of a causal analyses are
+printed and discussed in detail to help the user in evaluating whether
+the estimated effects can be interpreted as being causal. Currently,
+CarefullyCausal can be used in a setting with a fixed-exposure, meaning
+that the exposure does not vary over time. <br> Some key features:
+\*unordered list
 
 ## Installation
 
-You can install the development version of CarefullyCausal like so:
+You can install the development version of CarefullyCausal as follows:
 
-``` r{first}
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+``` r
+library(CarefullyCausal)
+## basic example code
 ```
 
 ## Example
