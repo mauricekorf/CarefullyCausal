@@ -20,11 +20,14 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-The goal of CarefullyCausal is to provide the user a practical guide when doing causal analyses. Particularly, CarefullyCausal provides the user the estimand, a table of causal estimates, a discussion on the causal assumptions, relevant diagnostics and interpretations/explanations. The key aspects of a causal analyses are printed and discussed in detail to help the user in evaluating whether the estimated effects can be interpreted as being causal. Currently, CarefullyCausal can be used in a setting with a fixed-exposure, meaning that the exposure does not vary over time.
-<br>
-Some key features:
-*unordered list
+The goal of CarefullyCausal is to provide the user a practical guide when doing causal analyses. Particularly, CarefullyCausal provides the user the estimand, a table of causal estimates, a discussion on the causal assumptions, relevant diagnostics and interpretations/explanations. The key aspects of a causal analyses are printed and discussed in detail to help the user in evaluating whether the estimated effects can be interpreted as being causal. Currently, CarefullyCausal can be used in a setting with a fixed-exposure, meaning that the exposure does not vary over time.\
 
+Some key features:\
+
+* **Setting**: Fixed-exposure
+* **Outcome of interest**: can be dichotomous or continuous
+* **Exposure of interest**: can be dichotomous, multi-value (max 4 levels) or continuous
+* **Effect measures**: can be in log(odds), risk ratio or odds ratio
 
 
 
@@ -32,8 +35,13 @@ Some key features:
 
 You can install the development version of CarefullyCausal as follows:
 ```{r install, eval=FALSE}
+# To download R packages from Github or other sources we need the "devtools" package
+install.packages("devtools")
+library("devtools")
+
+# Now we can download the CarefullyCausal package
+install_github("mauricekorf/CarefullyCausal")
 library(CarefullyCausal)
-## basic example code
 ```
 
 

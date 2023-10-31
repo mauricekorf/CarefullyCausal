@@ -14,16 +14,28 @@ interpretations/explanations. The key aspects of a causal analyses are
 printed and discussed in detail to help the user in evaluating whether
 the estimated effects can be interpreted as being causal. Currently,
 CarefullyCausal can be used in a setting with a fixed-exposure, meaning
-that the exposure does not vary over time. <br> Some key features:
-\*unordered list
+that the exposure does not vary over time.  
+
+Some key features:  
+
+- **Setting**: Fixed-exposure
+- **Outcome of interest**: can be dichotomous or continuous
+- **Exposure of interest**: can be dichotomous, multi-value (max 4
+  levels) or continuous
+- **Effect measures**: can be in log(odds), risk ratio or odds ratio
 
 ## Installation
 
 You can install the development version of CarefullyCausal as follows:
 
 ``` r
+# To download R packages from Github or other sources we need the "devtools" package
+install.packages("devtools")
+library("devtools")
+
+# Now we can download the CarefullyCausal package
+install_github("mauricekorf/CarefullyCausal")
 library(CarefullyCausal)
-## basic example code
 ```
 
 ## Example
