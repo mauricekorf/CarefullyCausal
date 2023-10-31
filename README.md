@@ -6,7 +6,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of CarefullyCausal is to … TESTTT
+The goal of CarefullyCausal is to provide a practical guide for doing
+causal analyses. CarefullyCausal can be used when there is a
+fixed-exposure, meaning it does not vary over time. This function prints
+the following output: the estimand, provides a table with the causal
+effect estimates and discusses the causal assumptions.
 
 ## Installation
 
