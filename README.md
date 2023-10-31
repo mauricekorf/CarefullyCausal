@@ -83,49 +83,267 @@ library(causaldata)
 df = nhefs_complete
 ```
 
+<br>
+
 We will now select the variables that we deemed to be relevant, as shown
 in Figure 1 (DAG).
 
 ``` r
 # Select variables
 df = nhefs_complete[,c("wt82_71","qsmk","race","sex","education","smokeintensity", "smokeyrs","wt71","exercise","active", "age")]
-
-#Get an idea of the data
-knitr::kable(head(df))
 ```
 
-|    wt82_71 | qsmk | race | sex | education | smokeintensity | smokeyrs |  wt71 | exercise | active | age |
-|-----------:|-----:|:-----|:----|:----------|---------------:|---------:|------:|:---------|:-------|----:|
-| -10.093960 |    0 | 1    | 0   | 1         |             30 |       29 | 79.04 | 2        | 0      |  42 |
-|   2.604970 |    0 | 0    | 0   | 2         |             20 |       24 | 58.63 | 0        | 0      |  36 |
-|   9.414486 |    0 | 1    | 1   | 2         |             20 |       26 | 56.81 | 2        | 0      |  56 |
-|   4.990117 |    0 | 1    | 0   | 1         |              3 |       53 | 59.42 | 2        | 1      |  68 |
-|   4.989251 |    0 | 0    | 0   | 2         |             20 |       19 | 87.09 | 1        | 1      |  40 |
-|   4.419060 |    0 | 1    | 1   | 2         |             10 |       21 | 99.00 | 1        | 1      |  43 |
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+wt82_71
+</th>
+<th style="text-align:right;">
+qsmk
+</th>
+<th style="text-align:left;">
+race
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:left;">
+education
+</th>
+<th style="text-align:right;">
+smokeintensity
+</th>
+<th style="text-align:right;">
+smokeyrs
+</th>
+<th style="text-align:right;">
+wt71
+</th>
+<th style="text-align:left;">
+exercise
+</th>
+<th style="text-align:left;">
+active
+</th>
+<th style="text-align:right;">
+age
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+-10.093960
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+79.04
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+42
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2.604970
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+58.63
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9.414486
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+56.81
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+56
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4.990117
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+59.42
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+68
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4.989251
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+87.09
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4.419060
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+99.00
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+43
+</td>
+</tr>
+</tbody>
+</table>
 
 [^1]: National Health and Nutrition Examination Survey Data I
     Epidemiologic Follow-up Study,
