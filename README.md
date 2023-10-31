@@ -44,16 +44,64 @@ To develop some intuition with the CarefullyCausal function and to
 highlight some important features, an example is step-by-step
 illustrated using the NHEFS[^1] data set.
 
+### Research Question
+
+Suppose that we are interested in the causal relation between quitting
+smoking and weight change (in Kilograms). Specifically,we would like to
+know the effect of quitting smoking on someone’s weight change. In order
+to evaluate this causal relation, we assume that there are some
+important confounders we need to adjust for, which includes:  
+sex, race, age, education level, smoke intensity (number of cigarettes
+per day), how long someone has been smoking ( in years), start weight
+(in Kilograms), how much someone exercises (**0:** much exercise, **1:**
+moderate exercise, **2:** no exercise) and how active a person is on a
+usual day (**0:** very active, **1:** moderately active, **2:**
+inactive)
+
+<br> Given that we assume that these are the only confounders and that
+no collider bias or selection bias is induced, we would obtain the
+following simple Directed Acyclic Graph (DAG):
+<img src="man/figures/README-RQ-1.png" width="60%" style="display: block; margin: auto;" />
+<center>
+<i>Figure 1: </i>The selected variables are for illustration purposes
+only. The DAG shows by no means the true causal structure
+</center>
+
 ### Data
 
-In this example we will use a subset of the NHEFS data set, which is
-provided by Hernán MA & Robins JM (2020) in the *Causal inference: What
-if* book[^2]
+In order to answer our research question, we will use a subset of the
+NHEFS data set from Hernán MA & Robins JM (2020) in the *Causal
+inference: What if* book[^2]. To conveniently import this data set we
+will use the package *causaldata*.
 
 ``` r
-library(CarefullyCausal)
-## basic example code
+# Download the required package, containing various (causal) data sets
+install.packages("causaldata")
+library(causaldata)
+
+# Load in the data, we will use the complete cases variant
+df = nhefs_complete
 ```
+
+We will now select the variables that we deemed to be relevant, as shown
+in Figure 1 (DAG).
+
+``` r
+# Select variables
+df = nhefs_complete[,c("wt82_71","qsmk","race","sex","education","smokeintensity", "smokeyrs","wt71","exercise","active", "age")]
+
+#Get an idea of the data
+knitr::kable(head(df))
+```
+
+|    wt82_71 | qsmk | race | sex | education | smokeintensity | smokeyrs |  wt71 | exercise | active | age |
+|-----------:|-----:|:-----|:----|:----------|---------------:|---------:|------:|:---------|:-------|----:|
+| -10.093960 |    0 | 1    | 0   | 1         |             30 |       29 | 79.04 | 2        | 0      |  42 |
+|   2.604970 |    0 | 0    | 0   | 2         |             20 |       24 | 58.63 | 0        | 0      |  36 |
+|   9.414486 |    0 | 1    | 1   | 2         |             20 |       26 | 56.81 | 2        | 0      |  56 |
+|   4.990117 |    0 | 1    | 0   | 1         |              3 |       53 | 59.42 | 2        | 1      |  68 |
+|   4.989251 |    0 | 0    | 0   | 2         |             20 |       19 | 87.09 | 1        | 1      |  40 |
+|   4.419060 |    0 | 1    | 1   | 2         |             10 |       21 | 99.00 | 1        | 1      |  43 |
 
 What is special about using `README.Rmd` instead of just `README.md`?
 You can include R chunks like so:

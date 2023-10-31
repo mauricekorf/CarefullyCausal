@@ -1,5 +1,6 @@
 ---
 output: github_document
+
   
 ---
 
@@ -49,15 +50,82 @@ library(CarefullyCausal)
 
 To develop some intuition with the CarefullyCausal function and to highlight some important features, an example is step-by-step illustrated using the NHEFS^[National Health and Nutrition Examination Survey Data I Epidemiologic Follow-up Study, https://wwwn.cdc.gov/nchs/nhanes/nhefs/] data set.
 
+
+### Research Question
+
+Suppose that we are interested in the causal relation between quitting smoking and weight change (in Kilograms). Specifically,we would like to know the effect of quitting smoking on someone's weight change. In order to evaluate this causal relation, we assume that there are some important confounders we need to adjust for, which includes:\
+sex, race, age, education level, smoke intensity (number of cigarettes per day), how long someone has been smoking ( in years), start weight (in Kilograms), how much someone exercises (**0:** much exercise, **1:** moderate exercise, **2:** no exercise) and how active a person is on a usual day (**0:** very active, **1:** moderately active, **2:** inactive)
+
+<br>
+Given that we assume that these are the only confounders and that no collider bias or selection bias is induced, we would obtain the following simple Directed Acyclic Graph (DAG):
+```{r RQ, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.width=10, fig.height=10, out.width='60%', fig.align='center'}
+library(ggdag)
+library(ggplot2)
+library(causaldata)
+library(kableExtra)
+
+# Load in the data, we will use the complete cases variant
+df = nhefs_complete
+
+# Make the coordination of the different nodes
+coord_dag <- list(
+  x = c(qsmk = 0, wt82_71 = 3, sex = 1.5, race = 1.5, education = 1.5, smokeintensity = 1.5, smokeyrs = 1.5, wt71 = 1.5, exercise = 1.5, active = 1.5, age = 1.5 ),
+  y = c(qsmk = 0, wt82_71 = 0, sex = 1, race = 1.5, education = 2, smokeintensity = 2.5, smokeyrs = -1, wt71 = -1.5, exercise = -2, active = -2.5, age = -3)
+)
+# Create the DAG structure
+our_dag <- ggdag::dagify(wt82_71 ~ qsmk,
+                         wt82_71 ~ sex + race + education + smokeintensity + smokeyrs + wt71 + exercise + active + age,
+                         qsmk ~ sex + race + education + smokeintensity + smokeyrs + wt71 +exercise + active + age,
+                         coords = coord_dag,
+                         labels = c("wt82_71" = "Weight\n change",
+                                    "qsmk" = "Quit smoke",
+                                    "race" = "race",
+                                    "sex" = "sex",
+                                    "education" = "education",
+                                    "smokeintensity" = "number cigarettes",
+                                    "smokeyrs" = "years smoking",
+                                    "wt71" = "start weight",
+                                    "exercise" = "exercise",
+                                    "active" = "active",
+                                    "age" = "age"))
+# Plot the DAG
+ggdag(our_dag, text = FALSE, use_labels = "label") + theme_void()
+
+```
+<center>
+<i>Figure 1: </i>The selected variables are for illustration purposes only. The DAG shows by no means the true causal structure
+</center>
+
+
+
+
 ### Data
 
-In this example we will use a subset of the NHEFS data set, which is provided by Hernán MA & Robins JM (2020)
-in the *Causal inference: What if* book^[Hernán MA, Robins JM (2020). Causal Inference: What If. Boca Raton: Chapman & Hall/CRC,https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/]
+In order to answer our research question, we will use a subset of the NHEFS data set from Hernán MA & Robins JM (2020) in the *Causal inference: What if* book^[Hernán MA, Robins JM (2020). Causal Inference: What If. Boca Raton: Chapman & Hall/CRC,https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/]. To conveniently import this data set we will use the package *causaldata*.
 
-```{r example}
-library(CarefullyCausal)
-## basic example code
+```{r download data, eval=FALSE}
+# Download the required package, containing various (causal) data sets
+install.packages("causaldata")
+library(causaldata)
+
+# Load in the data, we will use the complete cases variant
+df = nhefs_complete
 ```
+
+
+We will now select the variables that we deemed to be relevant, as shown in Figure 1 (DAG).
+```{r select variables data, eval=TRUE}
+# Select variables
+df = nhefs_complete[,c("wt82_71","qsmk","race","sex","education","smokeintensity", "smokeyrs","wt71","exercise","active", "age")]
+
+#Get an idea of the data
+knitr::kable(head(df))
+
+```
+
+
+
+
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
