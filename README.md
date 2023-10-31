@@ -40,7 +40,15 @@ library(CarefullyCausal)
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+To develop some intuition with the CarefullyCausal function and to
+highlight some important features, an example is step-by-step
+illustrated using the NHEFS[^1] data set.
+
+### Data
+
+In this example we will use a subset of the NHEFS data set, which is
+provided by Hernán MA & Robins JM (2020) in the *Causal inference: What
+if* book[^2]
 
 ``` r
 library(CarefullyCausal)
@@ -70,3 +78,11 @@ You can also embed plots, for example:
 
 In that case, don’t forget to commit and push the resulting figure
 files, so they display on GitHub and CRAN.
+
+[^1]: National Health and Nutrition Examination Survey Data I
+    Epidemiologic Follow-up Study,
+    <https://wwwn.cdc.gov/nchs/nhanes/nhefs/>
+
+[^2]: Hernán MA, Robins JM (2020). Causal Inference: What If. Boca
+    Raton: Chapman &
+    Hall/CRC,<https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/>
