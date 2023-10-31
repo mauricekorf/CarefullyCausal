@@ -58,6 +58,7 @@ sex, race, age, education level, smoke intensity (number of cigarettes per day),
 
 <br>
 Given that we assume that these are the only confounders and that no collider bias or selection bias is induced, we would obtain the following simple Directed Acyclic Graph (DAG):
+<p align='center'>
 ```{r RQ, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.width=10, fig.height=10, out.width='60%', fig.align='center'}
 library(ggdag)
 library(ggplot2)
@@ -92,6 +93,7 @@ our_dag <- ggdag::dagify(wt82_71 ~ qsmk,
 ggdag(our_dag, text = FALSE, use_labels = "label") + theme_void()
 
 ```
+</p>
 <center>
 <i>Figure 1: </i>The selected variables are for illustration purposes only. The DAG shows by no means the true causal structure
 </center>

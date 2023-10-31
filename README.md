@@ -61,7 +61,9 @@ inactive)
 <br> Given that we assume that these are the only confounders and that
 no collider bias or selection bias is induced, we would obtain the
 following simple Directed Acyclic Graph (DAG):
+<p align="center">
 <img src="man/figures/README-RQ-1.png" width="60%" style="display: block; margin: auto;" />
+</p>
 <center>
 <i>Figure 1: </i>The selected variables are for illustration purposes
 only. The DAG shows by no means the true causal structure
