@@ -88,7 +88,8 @@ df = nhefs_complete
 <br>
 
 We will now select the variables that we deemed to be relevant, as shown
-in Figure 1 (DAG).
+in Figure 1 (DAG). We show the first six rows of the data set below, to
+get an idea of the data set.
 
 ``` r
 # Select variables
@@ -346,6 +347,154 @@ age
 </tr>
 </tbody>
 </table>
+
+<br>
+
+To further inspect the variable coding and the corresponding definition
+we will create a table including the class of the variable.
+<center>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:left;">
+class
+</th>
+<th style="text-align:left;">
+description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+wt82_71
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+The weight change between 1971 and 1982 in Kg
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+qsmk
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+Quit smoking, 1: yes, 0: no
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+race
+</td>
+<td style="text-align:left;">
+factor
+</td>
+<td style="text-align:left;">
+1: black or other, 0: white,
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:left;">
+factor
+</td>
+<td style="text-align:left;">
+1: female, 0: male
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education
+</td>
+<td style="text-align:left;">
+factor
+</td>
+<td style="text-align:left;">
+1: 8th grade, 2: HS dropout, 3: HS, 4: college dropout, 5: college or
+higher
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+smokeintensity
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+Number of cigarettes smoked per day in 1971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+smokeyrs
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+Years of smoking
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wt71
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+Start weight (Kg) in 1971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+exercise
+</td>
+<td style="text-align:left;">
+factor
+</td>
+<td style="text-align:left;">
+In recreation in 1971 how mu h exercising, 0: much, 1: moderate, 2:
+little or none
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active
+</td>
+<td style="text-align:left;">
+factor
+</td>
+<td style="text-align:left;">
+On usual day how active in 1971, 0: very active, 1: moderately active,
+2: inactive
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+Age in 1971
+</td>
+</tr>
+</tbody>
+</table>
+</center>
 
 [^1]: National Health and Nutrition Examination Survey Data I
     Epidemiologic Follow-up Study,

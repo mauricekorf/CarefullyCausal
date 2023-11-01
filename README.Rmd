@@ -69,6 +69,7 @@ library(kableExtra)
 df = nhefs_complete
 
 # Make the coordination of the different nodes
+# https://lfoswald.github.io/2021-spring-stats2/materials/session-3/03-online-tutorial/
 coord_dag <- list(
   x = c(qsmk = 0, wt82_71 = 3, sex = 1.5, race = 1.5, education = 1.5, smokeintensity = 1.5, smokeyrs = 1.5, wt71 = 1.5, exercise = 1.5, active = 1.5, age = 1.5 ),
   y = c(qsmk = 0, wt82_71 = 0, sex = 1, race = 1.5, education = 2, smokeintensity = 2.5, smokeyrs = -1, wt71 = -1.5, exercise = -2, active = -2.5, age = -3)
@@ -116,17 +117,38 @@ df = nhefs_complete
 <br>
 
 
-We will now select the variables that we deemed to be relevant, as shown in Figure 1 (DAG).
+We will now select the variables that we deemed to be relevant, as shown in Figure 1 (DAG). We show the first six rows of the data set below, to get an idea of the data set.
 ```{r select variables data, eval=TRUE}
 # Select variables
 df = nhefs_complete[,c("wt82_71","qsmk","race","sex","education","smokeintensity", "smokeyrs","wt71","exercise","active", "age")]
 ```
 
 ```{r show variables data, eval=TRUE, echo=FALSE}
-#Get an idea of the data (first 6 rows)
+# Get an idea of the data (first 6 rows)
 knitr::kable(head(df))
 ```
+<br>
 
+To further inspect the variable coding and the corresponding definition we will create a table including the class of the variable.
+<center>
+```{r explain variables data, eval=TRUE, echo=FALSE, fig.align='center', out.width="60%"}
+# Get an idea how the variables are coded and what type it is
+variables <- setNames(stack(sapply(df, class))[2:1], c('variable', 'class'))
+description <- c("The weight change between 1971 and 1982 in Kg ",
+                 "Quit smoking, 1: yes, 0: no",
+                 "1: black or other, 0: white, ",
+                 "1: female, 0: male",
+                 "1: 8th grade, 2: HS dropout, 3: HS, 4: college dropout, 5: college or higher",
+                 "Number of cigarettes smoked per day in 1971",
+                 "Years of smoking",
+                 "Start weight (Kg) in 1971",
+                 "In recreation in 1971 how mu h exercising, 0: much, 1: moderate, 2: little or none",
+                 "On usual day how active in 1971, 0: very active, 1: moderately active, 2: inactive",
+                 "Age in 1971")
 
+variables = cbind(variables,description)
+knitr::kable(variables)
+```
+</center>
 
 
