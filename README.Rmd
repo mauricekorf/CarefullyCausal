@@ -64,6 +64,7 @@ library(ggdag)
 library(ggplot2)
 library(causaldata)
 library(kableExtra)
+library(CarefullyCausal)
 
 # Load in the data, we will use the complete cases variant
 df = nhefs_complete
@@ -98,7 +99,7 @@ ggdag(our_dag, text = FALSE, use_labels = "label") + theme_void()
 <center>
 <i>Figure 1: </i>The selected variables are for illustration purposes only. The DAG shows by no means the true causal structure
 </center>
-
+<br>
 
 
 
@@ -150,5 +151,40 @@ variables = cbind(variables,description)
 knitr::kable(variables)
 ```
 </center>
+<br>
+
+
+### Analysis (Applying CarefullyCausal)
+
+We will now shift our focus to actually using the CarefullyCausal function. The minimal call requires us to specify the following arguments: *formula, data, family and exposure*. Note that you can always consult the help file within R to see the documentation of CarefullyCausal and to learn about all available arguments including an explanation. You can access this by simply typing in *CarefullyCausal* in the help tab in R. Nonetheless, we summarise the key arguments we need for the minimal call.
+
+
+* *Formula*, this has the same form as for example when using *glm* which is $y\sim x + w$. Here $y$ denotes the outcome of interest variable, $x$ denotes the exposure and $w$ is a covariate we want to adjust for
+* *Data*, specify the data frame (data set)
+* *Family*, this is the same as in *glm* where it describes the error distribution and link function. Here we have two choices: *"gaussian"* or *"binomial"*. This depends on the nature of the outcome of interest. In our example the outcome is continuous and thus we use the *"gaussian"* argument (default setting)
+* *Exposure*, we explicitly define our exposure variable as a character string. In this example, it will be *"qsmk"*
+
+
+```{r analysis, eval=TRUE, fig.show='hide', warning=FALSE, message=FALSE}
+# Transform exposure in a factor variable and transform into dataframe
+df$qsmk = as.factor(df$qsmk) 
+df = as.data.frame(df)
+
+# Run the CarefullyCausal function and save it in the object "output"
+output <- CarefullyCausal(wt82_71 ~ qsmk + race + sex + education + smokeintensity + smokeyrs + wt71 + exercise
+                          + active + age,
+                          data = df,
+                          exposure = "qsmk",
+                          family = "gaussian")
+# Print the output
+output
+```
+<br>
+
+
+
+
+
+
 
 

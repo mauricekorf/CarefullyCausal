@@ -69,6 +69,8 @@ following simple Directed Acyclic Graph (DAG):
 only. The DAG shows by no means the true causal structure
 </center>
 
+<br>
+
 ### Data
 
 In order to answer our research question, we will use a subset of the
@@ -495,6 +497,97 @@ Age in 1971
 </tbody>
 </table>
 </center>
+
+<br>
+
+### Analysis (Applying CarefullyCausal)
+
+We will now shift our focus to actually using the CarefullyCausal
+function. The minimal call requires us to specify the following
+arguments: *formula, data, family and exposure*. Note that you can
+always consult the help file within R to see the documentation of
+CarefullyCausal and to learn about all available arguments including an
+explanation. You can access this by simply typing in *CarefullyCausal*
+in the help tab in R. Nonetheless, we summarise the key arguments we
+need for the minimal call.
+
+- *Formula*, this has the same form as for example when using *glm*
+  which is $y\sim x + w$. Here $y$ denotes the outcome of interest
+  variable, $x$ denotes the exposure and $w$ is a covariate we want to
+  adjust for
+- *Data*, specify the data frame (data set)
+- *Family*, this is the same as in *glm* where it describes the error
+  distribution and link function. Here we have two choices: *“gaussian”*
+  or *“binomial”*. This depends on the nature of the outcome of
+  interest. In our example the outcome is continuous and thus we use the
+  *“gaussian”* argument (default setting)
+- *Exposure*, we explicitly define our exposure variable as a character
+  string. In this example, it will be *“qsmk”*
+
+``` r
+# Transform exposure in a factor variable and transform into dataframe
+df$qsmk = as.factor(df$qsmk) 
+df = as.data.frame(df)
+
+# Run the CarefullyCausal function and save it in the object "output"
+output <- CarefullyCausal(wt82_71 ~ qsmk + race + sex + education + smokeintensity + smokeyrs + wt71 + exercise
+                          + active + age,
+                          data = df,
+                          exposure = "qsmk",
+                          family = "gaussian")
+# Print the output
+output
+#> 
+#> Estimand: 
+#> Conditional 
+#> E[wt82_71^qsmk=1|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]  -  E[wt82_71^qsmk=0|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]
+#> 
+#> Marginal 
+#> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
+#> *Please see output at $Estimand_interpretation for details 
+#>  
+#> 
+#> Treatment effect: 
+#>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
+#> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
+#> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
+#> qsmk1 S-standardization     3.381      0.455     Inf        2.438        4.222
+#> qsmk1 T-standardization     3.448      0.462     Inf        2.547        4.359
+#> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
+#> 
+#> Reference exposure level: 0 
+#> 
+#> 
+#> Please evaluate whether the difference beteen the lowest estimate: 3.3183 and highest: 3.4482 is of substance, 
+#> given the nature of the data. If so, evaluate the different modelling assumptions.
+#> 
+#> 
+#> To interpret these effects as causal, the following key assumptions must be satisfied: 
+#> 
+#> [1] Conditional exchangeability: implies that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is enough to completely eliminate 
+#> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
+#> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
+#> 
+#> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
+#>  
+#>                        PS range for 1
+#> observed exposure: 0   0.0338, 0.6520
+#> observed exposure: 1   0.0685, 0.7709
+#> 
+#> [3] Consistency: implies that exposure 'qsmk' must be sufficiently well-defined so that any variation within 
+#> the definition of the exposure would not result in a different outcome. See $Assumption$consistency 
+#> for a more in-depth explanation and examples. 
+#> 
+#> [4] No measurement error: assumes that all variables were measured without substantial error, such that
+#> no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, 
+#> then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error 
+#> for a further discussion 
+#> 
+#> [5] Well-specified models: assumes that any models used are well-specified meaning that they include all
+#> relevant non-linearities and/or statistical interactions
+```
+
+<br>
 
 [^1]: National Health and Nutrition Examination Survey Data I
     Epidemiologic Follow-up Study,
