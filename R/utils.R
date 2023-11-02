@@ -764,7 +764,7 @@ ps_plot_intern <- function(object,outcome,covariates,exposure){
     }
     legend("topright",cex=0.5,legend = levels(factor(eval(parse(text = paste0("df$",exposure))))),col = plotcolors[1:length(list1[[j]])], lty = 1, bty = "n")
     plot_list[[j]] <- recordPlot()
-    dev.off(dev.list()["RStudioGD"])
+    try(dev.off(dev.list()["RStudioGD"]), silent = TRUE)
 
   }
   return(plot_list)
