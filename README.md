@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.457     Inf        2.496        4.287
-#> qsmk1 T-standardization     3.448      0.512     Inf        2.325        4.330
+#> qsmk1 S-standardization     3.381      0.453     Inf        2.630        4.408
+#> qsmk1 T-standardization     3.448      0.543     Inf        2.339        4.466
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -780,6 +780,725 @@ below, where key characteristics are listed below:
 #> Please evaluate whether the difference beteen the lowest estimate: 3.3183 and highest: 3.4482 is of substance, 
 #> given the nature of the data. If so, evaluate the different modelling assumptions.
 ```
+
+<br>
+
+Below the estimates table the reference exposure level is explicitly
+stated. When having a multi-value exposure then all the contrasts are
+displayed with respect to the reference exposure level for each
+estimator. However, when you would like to change the reference exposure
+level you need to relevel the exposure variable (factor).
+CarefullyCausal by defaults picks the first level as reference level,
+which is the default behavior of R aswell, where the reference level can
+be viewed using argument `level(exposure)`.
+
+The last lines state that you should evaluate whether the difference
+between the estimates is of substance or not. Important to note is that
+there is *not* a best model, but that you should fit different
+estimators to see if they agree and may provide you with a broader
+context to the estimate. If all the estimates are very similar it does
+not guarantuee that the estimates are unbiased but at least it provides
+us with more information than when reporting a single estimate. However,
+if the estimates are very different (*depends on the data, domain and
+assumptions*) and this is considered to be practically important, then
+it should be investigated why. This raises questions such as whether
+particular modelling assumptions are violated? How these are violated?
+and if there is a solution? and so on. So, rather than seeing it is
+about selecting a *best model* it is more to provide you with
+information that might indicate that further inspection is necessary.
+
+In this example we have a continuous outcome and thus the estimates are
+interpreted in the units of the outcome variable. When the outcome
+variable is dichotomous, the default is that the estimates are in terms
+of log(odds ratio) but you can specify the arguments `result_type="rr"`
+or `result_type="or"` to get it in terms of risk ratio or odds ratio,
+respectively. <br> <br>
+
+##### Assumptions and Diagnostics
+
+Key part of causal analyses is evaluating the underlying causal
+assumptions in order to form a judgement about to what extent the
+estimated effects can be interpreted as being causal. In this part it is
+crucial to think through why the assumptions seem plausible to hold as
+it helps you justify the causal interpretations. CarefullyCausal
+discusses five key underlying causal assumptions including:
+(conditional) exchangeability, consistency, positivity, having a
+well-specified model and having no measurement errors. In the printed
+output a brief description and bold statement is provided regarding what
+you are assuming. This should by no means scare you off, but should
+motivate you to look into each assumption and to think about arguments
+why the assumption does indeed seem plausible to hold. We will now look
+into each assumption in more detail and show what useful diagnostics
+that are saved in the output may assist you.
+
+``` r
+#> To interpret these effects as causal, the following key assumptions must be satisfied: 
+#> 
+#> [1] Conditional exchangeability: implies that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is enough to completely eliminate 
+#> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
+#> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
+#> 
+#> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
+#>  
+#>                        PS range for 1
+#> observed exposure: 0   0.0338, 0.6520
+#> observed exposure: 1   0.0685, 0.7709
+#> 
+#> [3] Consistency: implies that exposure 'qsmk' must be sufficiently well-defined so that any variation within 
+#> the definition of the exposure would not result in a different outcome. See $Assumption$consistency 
+#> for a more in-depth explanation and examples. 
+#> 
+#> [4] No measurement error: assumes that all variables were measured without substantial error, such that
+#> no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, 
+#> then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error 
+#> for a further discussion 
+#> 
+#> [5] Well-specified models: assumes that any models used are well-specified meaning that they include all
+#> relevant non-linearities and/or statistical interactions
+```
+
+<br>
+
+###### Conditional Exchangeability
+
+We can obtain a more detailed explanation and interpretation of the
+exchangeability assumption from the saved output object.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$exchangeability$explanation
+
+#> [1] "Conditional exchangeability implies the absence of any confounding or selection bias after adjusting
+#> for:  race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age . In other words, the
+#> exposed group is a perfect representation what would have happened to the unexposed group had they been
+#> exposed (and vice versa). The covariate balancing table and corresponding balance plots in the output can
+#> be consulted ($Assumptions$exchangeability$covariate_balance) where better balance between the two
+#> groups will indicate less residual bias due to the variables adjusted for. Any confounding due to
+#> variables not adjusted for will remain. Besides checking the covariate balance of the current adjusted
+#> covariates, an important reflective question to be thought-over is: given the current adjusted for
+#> covariates, are there any other important (unmeasured) covariates that affect both treatment
+#> assignment and outcome of interest that should be adjusted for without inducing collider or
+#> selection bias? Next to this conditional setting, we can also have a setting when no covariates
+#> are adjusted for and we assume marginal exchangeability. Marginal exchangeability implies the
+#> absence of any confounding or selection bias when not adjusting for anything (unconditionally).
+#> This is obtained in an ideal randomized experiment design"
+```
+
+<br>
+
+``` r
+# We can obtain covariate balance table from the saved output object named "output"
+output$Assumptions$exchangeability$covariate_balance
+```
+
+<table>
+<caption>
+Balance Measures
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Type
+</th>
+<th style="text-align:right;">
+M.0.Un
+</th>
+<th style="text-align:right;">
+M.1.Un
+</th>
+<th style="text-align:right;">
+Diff.Un
+</th>
+<th style="text-align:right;">
+M.0.Adj
+</th>
+<th style="text-align:right;">
+M.1.Adj
+</th>
+<th style="text-align:right;">
+Diff.Adj
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+prop.score
+</td>
+<td style="text-align:left;">
+Distance
+</td>
+<td style="text-align:right;">
+0.2417253
+</td>
+<td style="text-align:right;">
+0.3021265
+</td>
+<td style="text-align:right;">
+0.5368600
+</td>
+<td style="text-align:right;">
+0.2591321
+</td>
+<td style="text-align:right;">
+0.2567410
+</td>
+<td style="text-align:right;">
+-0.0212524
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+race
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.1461737
+</td>
+<td style="text-align:right;">
+0.0893300
+</td>
+<td style="text-align:right;">
+-0.0568437
+</td>
+<td style="text-align:right;">
+0.1311683
+</td>
+<td style="text-align:right;">
+0.1311622
+</td>
+<td style="text-align:right;">
+-0.0000060
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.5339639
+</td>
+<td style="text-align:right;">
+0.4540943
+</td>
+<td style="text-align:right;">
+-0.0798696
+</td>
+<td style="text-align:right;">
+0.5113079
+</td>
+<td style="text-align:right;">
+0.5113118
+</td>
+<td style="text-align:right;">
+0.0000039
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_1
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.1805675
+</td>
+<td style="text-align:right;">
+0.2009926
+</td>
+<td style="text-align:right;">
+0.0204251
+</td>
+<td style="text-align:right;">
+0.1813769
+</td>
+<td style="text-align:right;">
+0.1813580
+</td>
+<td style="text-align:right;">
+-0.0000190
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_2
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.2287188
+</td>
+<td style="text-align:right;">
+0.1836228
+</td>
+<td style="text-align:right;">
+-0.0450960
+</td>
+<td style="text-align:right;">
+0.2179699
+</td>
+<td style="text-align:right;">
+0.2179589
+</td>
+<td style="text-align:right;">
+-0.0000111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_3
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.4127257
+</td>
+<td style="text-align:right;">
+0.3895782
+</td>
+<td style="text-align:right;">
+-0.0231475
+</td>
+<td style="text-align:right;">
+0.4041580
+</td>
+<td style="text-align:right;">
+0.4041876
+</td>
+<td style="text-align:right;">
+0.0000296
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_4
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.0791058
+</td>
+<td style="text-align:right;">
+0.0719603
+</td>
+<td style="text-align:right;">
+-0.0071455
+</td>
+<td style="text-align:right;">
+0.0804544
+</td>
+<td style="text-align:right;">
+0.0804462
+</td>
+<td style="text-align:right;">
+-0.0000082
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_5
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.0988822
+</td>
+<td style="text-align:right;">
+0.1538462
+</td>
+<td style="text-align:right;">
+0.0549640
+</td>
+<td style="text-align:right;">
+0.1160408
+</td>
+<td style="text-align:right;">
+0.1160494
+</td>
+<td style="text-align:right;">
+0.0000086
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+smokeintensity
+</td>
+<td style="text-align:left;">
+Contin.
+</td>
+<td style="text-align:right;">
+21.1917455
+</td>
+<td style="text-align:right;">
+18.6029777
+</td>
+<td style="text-align:right;">
+-0.2166746
+</td>
+<td style="text-align:right;">
+20.5519894
+</td>
+<td style="text-align:right;">
+20.5504753
+</td>
+<td style="text-align:right;">
+-0.0001267
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+smokeyrs
+</td>
+<td style="text-align:left;">
+Contin.
+</td>
+<td style="text-align:right;">
+24.0877042
+</td>
+<td style="text-align:right;">
+26.0322581
+</td>
+<td style="text-align:right;">
+0.1589181
+</td>
+<td style="text-align:right;">
+24.7241755
+</td>
+<td style="text-align:right;">
+24.7246024
+</td>
+<td style="text-align:right;">
+0.0000349
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wt71
+</td>
+<td style="text-align:left;">
+Contin.
+</td>
+<td style="text-align:right;">
+70.3028375
+</td>
+<td style="text-align:right;">
+72.3548883
+</td>
+<td style="text-align:right;">
+0.1332162
+</td>
+<td style="text-align:right;">
+70.7447292
+</td>
+<td style="text-align:right;">
+70.7457996
+</td>
+<td style="text-align:right;">
+0.0000695
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+exercise_0
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.2037833
+</td>
+<td style="text-align:right;">
+0.1563275
+</td>
+<td style="text-align:right;">
+-0.0474558
+</td>
+<td style="text-align:right;">
+0.1895426
+</td>
+<td style="text-align:right;">
+0.1895168
+</td>
+<td style="text-align:right;">
+-0.0000259
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+exercise_1
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.4170249
+</td>
+<td style="text-align:right;">
+0.4367246
+</td>
+<td style="text-align:right;">
+0.0196996
+</td>
+<td style="text-align:right;">
+0.4303267
+</td>
+<td style="text-align:right;">
+0.4303411
+</td>
+<td style="text-align:right;">
+0.0000144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+exercise_2
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.3791917
+</td>
+<td style="text-align:right;">
+0.4069479
+</td>
+<td style="text-align:right;">
+0.0277561
+</td>
+<td style="text-align:right;">
+0.3801306
+</td>
+<td style="text-align:right;">
+0.3801421
+</td>
+<td style="text-align:right;">
+0.0000114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active_0
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.4574377
+</td>
+<td style="text-align:right;">
+0.4218362
+</td>
+<td style="text-align:right;">
+-0.0356014
+</td>
+<td style="text-align:right;">
+0.4435776
+</td>
+<td style="text-align:right;">
+0.4435609
+</td>
+<td style="text-align:right;">
+-0.0000167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active_1
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.4531384
+</td>
+<td style="text-align:right;">
+0.4665012
+</td>
+<td style="text-align:right;">
+0.0133628
+</td>
+<td style="text-align:right;">
+0.4646755
+</td>
+<td style="text-align:right;">
+0.4646865
+</td>
+<td style="text-align:right;">
+0.0000110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+active_2
+</td>
+<td style="text-align:left;">
+Binary
+</td>
+<td style="text-align:right;">
+0.0894239
+</td>
+<td style="text-align:right;">
+0.1116625
+</td>
+<td style="text-align:right;">
+0.0222386
+</td>
+<td style="text-align:right;">
+0.0917469
+</td>
+<td style="text-align:right;">
+0.0917527
+</td>
+<td style="text-align:right;">
+0.0000057
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:left;">
+Contin.
+</td>
+<td style="text-align:right;">
+42.7884781
+</td>
+<td style="text-align:right;">
+46.1736973
+</td>
+<td style="text-align:right;">
+0.2819809
+</td>
+<td style="text-align:right;">
+43.8193798
+</td>
+<td style="text-align:right;">
+43.8200773
+</td>
+<td style="text-align:right;">
+0.0000581
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+Effective Sample Size
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Control
+</th>
+<th style="text-align:right;">
+Treated
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Unadjusted
+</td>
+<td style="text-align:right;">
+1163.000
+</td>
+<td style="text-align:right;">
+403.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adjusted
+</td>
+<td style="text-align:right;">
+1130.375
+</td>
+<td style="text-align:right;">
+334.9103
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+We can obtain covariate balance plots in the same way as before, so from
+the saved output object named “output”. Below we will show just two
+plots, but in the output you can find two *overall* balance plots where
+one is in terms of *standardized mean difference* (shown below) and the
+other is in terms of *absolute standardized mean differences*. In
+addition, there is a balance plot per covariate (an example is shown for
+the variable sex). The terms *unadjusted* and *adjusted* refer to before
+weighting and after weighting, respectively, using the estimated weights
+from the `CBPS` function and package. Ideally, we would like to see
+balancing covariates such that the difference between the means is close
+to zero. However, it should be noted that only variables are balanced
+that are adjusted for and thus we might still have residual confounding
+if we miss important confounders.
+
+``` r
+# We can obtain covariate balance plots from the saved output object named "output"
+output$Assumptions$exchangeability$balance_plots$Covariate_balance_std
+output$Assumptions$exchangeability$balance_plots$sex
+```
+
+<img src="man/figures/README-CVB4 Exchangeability Assumptions-1.png" width="50%" /><img src="man/figures/README-CVB4 Exchangeability Assumptions-2.png" width="50%" />
+<br>
+
+###### Positivity
+
+Just as with the exchangeability, we can obtain a more detailed
+explanation and interpretation of the positivity assumption from the
+saved output object.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$positivity
+
+#> [1] "Positivity requires that there are both exposed and unexposed individuals within every strata of: race,
+#> sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age. More formally, positivity is
+#> satisfied if for every combination of confounders: 'race, sex, education, smokeintensity, smokeyrs, wt71,
+#> exercise, active, age' the probability of receiving exposure 'qsmk' is 0<Pr(qsmk)<1. The conditional
+#> probability of receiving exposure 'qsmk' when conditioning on covariates 'race, sex, education,
+#> smokeintensity, smokeyrs, wt71, exercise, active, age' is referred to as propensity score (PS). Hence,
+#> the propensity score ranges table shows the minimum and maximum value of the estimated conditional
+#> probabilities and should not equal 0 or 1,as that would violate positivity since there could be a
+#> deterministic assignment of exposure. In addition, the ps.plot() function can be used to generate a
+#> propensity score plot and can be used to evaluate the complete distribution of the estimated PS.
+#> This PS plot can be used to look for ranges of the PS where there is no overlap between exposed
+#> and unexposed, in terms of the propensity scores. The ranges table should be used in conjuction
+#> with the PS plot."
+```
+
+<br>
+
+To get a better idea of potential positivity violations we can obtain a
+propensity score plot. This plots the conditional probability density
+plots of the propensity score.
+
+``` r
+# We can obtain covariate balance plots from the saved output object named "output"
+output$Assumptions$positivity$plots[[1]]
+```
+
+<center>
+<img src="man/figures/README-Ps plot2 Positivity Assumptions-1.png" width="50%" style="display: block; margin: auto;" />
+</center>
 
 <br>
 

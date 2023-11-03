@@ -249,6 +249,144 @@ Besides using `Superlearner` for this estimation step, you can also use `CBPS` u
 ```
 <br>
 
+Below the estimates table the reference exposure level is explicitly stated. When having a multi-value exposure then all the contrasts are displayed with respect to the reference exposure level for each estimator. However, when you would like to change the reference exposure level you need to relevel the exposure variable (factor). CarefullyCausal by defaults picks the first level as reference level, which is the default behavior of R aswell, where the reference level can be viewed using argument `level(exposure)`.
+
+The last lines state that you should evaluate whether the difference between the estimates is of substance or not. Important to note is that there is *not* a best model, but that you should fit different estimators to see if they agree and may provide you with a broader context to the estimate. If all the estimates are very similar it does not guarantuee that the estimates are unbiased but at least it provides us with more information than when reporting a single estimate. However, if the estimates are very different (*depends on the data, domain and assumptions*) and this is considered to be practically important, then it should be investigated why. This raises questions such as whether particular modelling assumptions are violated? How these are violated? and if there is a solution? and so on. So, rather than seeing it is about selecting a *best model* it is more to provide you with information that might indicate that further inspection is necessary.
+
+In this example we have a continuous outcome and thus the estimates are interpreted in the units of the outcome variable. When the outcome variable is dichotomous, the default is that the estimates are in terms of log(odds ratio) but you can specify the arguments `result_type="rr"` or `result_type="or"` to get it in terms of risk ratio or odds ratio, respectively.
+<br>
+<br>
+
+
+
+##### Assumptions and Diagnostics
+Key part of causal analyses is evaluating the underlying causal assumptions in order to form a judgement about to what extent the estimated effects can be interpreted as being causal. In this part it is crucial to think through why the assumptions seem plausible to hold as it helps you justify the causal interpretations. CarefullyCausal discusses five key underlying causal assumptions including: (conditional) exchangeability, consistency, positivity, having a well-specified model and having no measurement errors. In the printed output a brief description and bold statement is provided regarding what you are assuming. This should by no means scare you off, but should motivate you to look into each assumption and to think about arguments why the assumption does indeed seem plausible to hold. We will now look into each assumption in more detail and show what useful diagnostics that are saved in the output may assist you.
+
+```{r Assumptions, eval=FALSE}
+#> To interpret these effects as causal, the following key assumptions must be satisfied: 
+#> 
+#> [1] Conditional exchangeability: implies that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is enough to completely eliminate 
+#> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
+#> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
+#> 
+#> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
+#>  
+#>                        PS range for 1
+#> observed exposure: 0   0.0338, 0.6520
+#> observed exposure: 1   0.0685, 0.7709
+#> 
+#> [3] Consistency: implies that exposure 'qsmk' must be sufficiently well-defined so that any variation within 
+#> the definition of the exposure would not result in a different outcome. See $Assumption$consistency 
+#> for a more in-depth explanation and examples. 
+#> 
+#> [4] No measurement error: assumes that all variables were measured without substantial error, such that
+#> no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, 
+#> then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error 
+#> for a further discussion 
+#> 
+#> [5] Well-specified models: assumes that any models used are well-specified meaning that they include all
+#> relevant non-linearities and/or statistical interactions
+
+```
+<br>
+
+###### Conditional Exchangeability
+We can obtain a more detailed explanation and interpretation of the exchangeability assumption from the saved output object.
+```{r Exchangeability Assumptions, eval=FALSE}
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$exchangeability$explanation
+
+#> [1] "Conditional exchangeability implies the absence of any confounding or selection bias after adjusting
+#> for:  race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age . In other words, the
+#> exposed group is a perfect representation what would have happened to the unexposed group had they been
+#> exposed (and vice versa). The covariate balancing table and corresponding balance plots in the output can
+#> be consulted ($Assumptions$exchangeability$covariate_balance) where better balance between the two
+#> groups will indicate less residual bias due to the variables adjusted for. Any confounding due to
+#> variables not adjusted for will remain. Besides checking the covariate balance of the current adjusted
+#> covariates, an important reflective question to be thought-over is: given the current adjusted for
+#> covariates, are there any other important (unmeasured) covariates that affect both treatment
+#> assignment and outcome of interest that should be adjusted for without inducing collider or
+#> selection bias? Next to this conditional setting, we can also have a setting when no covariates
+#> are adjusted for and we assume marginal exchangeability. Marginal exchangeability implies the
+#> absence of any confounding or selection bias when not adjusting for anything (unconditionally).
+#> This is obtained in an ideal randomized experiment design"
+```
+<br>
+
+```{r CVB1 Exchangeability Assumptions, eval=FALSE}
+# We can obtain covariate balance table from the saved output object named "output"
+output$Assumptions$exchangeability$covariate_balance
+```
+
+
+```{r CVB2 Exchangeability Assumptions, eval=TRUE,echo=FALSE}
+# We can obtain an explanation/interpretation from the saved output object named "output"
+knitr::kable(output$Assumptions$exchangeability$covariate_balance$Balance, caption = "Balance Measures")
+knitr::kable(output$Assumptions$exchangeability$covariate_balance$Observations, caption = "Effective Sample Size")
+```
+<br>
+
+We can obtain covariate balance plots in the same way as before, so from the saved output object named "output". Below we will show just two plots, but in the output you can find two *overall* balance plots where one is in terms of *standardized mean difference* (shown below) and the other is in terms of *absolute standardized mean differences*. In addition, there is a balance plot per covariate (an example is shown for the variable sex). The terms *unadjusted* and *adjusted* refer to before weighting and after weighting, respectively, using the estimated weights from the `CBPS` function and package. Ideally, we would like to see balancing covariates such that the difference between the means is close to zero. However, it should be noted that only variables are balanced that are adjusted for and thus we might still have residual confounding if we miss important confounders.
+```{r CVB3 Exchangeability Assumptions, eval=FALSE}
+# We can obtain covariate balance plots from the saved output object named "output"
+output$Assumptions$exchangeability$balance_plots$Covariate_balance_std
+output$Assumptions$exchangeability$balance_plots$sex
+
+```
+
+
+```{r CVB4 Exchangeability Assumptions, eval=TRUE, echo=FALSE, fig.show='hold',out.width='50%'}
+output$Assumptions$exchangeability$balance_plots$Covariate_balance_std
+output$Assumptions$exchangeability$balance_plots$sex
+
+```
+<br>
+
+
+
+###### Positivity
+Just as with the exchangeability, we can obtain a more detailed explanation and interpretation of the positivity assumption from the saved output object.
+```{r Posivity Assumptions, eval=FALSE}
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$positivity
+
+#> [1] "Positivity requires that there are both exposed and unexposed individuals within every strata of: race,
+#> sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age. More formally, positivity is
+#> satisfied if for every combination of confounders: 'race, sex, education, smokeintensity, smokeyrs, wt71,
+#> exercise, active, age' the probability of receiving exposure 'qsmk' is 0<Pr(qsmk)<1. The conditional
+#> probability of receiving exposure 'qsmk' when conditioning on covariates 'race, sex, education,
+#> smokeintensity, smokeyrs, wt71, exercise, active, age' is referred to as propensity score (PS). Hence,
+#> the propensity score ranges table shows the minimum and maximum value of the estimated conditional
+#> probabilities and should not equal 0 or 1,as that would violate positivity since there could be a
+#> deterministic assignment of exposure. In addition, the ps.plot() function can be used to generate a
+#> propensity score plot and can be used to evaluate the complete distribution of the estimated PS.
+#> This PS plot can be used to look for ranges of the PS where there is no overlap between exposed
+#> and unexposed, in terms of the propensity scores. The ranges table should be used in conjuction
+#> with the PS plot."
+
+
+```
+<br>
+
+To get a better idea of potential positivity violations we can obtain a propensity score plot. This plots the conditional probability density plots of the propensity score. 
+```{r Ps plot1 Positivity Assumptions, eval=FALSE}
+# We can obtain covariate balance plots from the saved output object named "output"
+output$Assumptions$positivity$plots[[1]]
+
+```
+
+<center>
+```{r Ps plot2 Positivity Assumptions, eval=TRUE, echo=FALSE, fig.show='hold',out.width='50%', fig.align='center'}
+output$Assumptions$positivity$plots[[1]]
+
+```
+</center>
+<br>
+
+
+
+
+
 
 
 
