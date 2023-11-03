@@ -11,8 +11,8 @@ when doing causal analyses. Particularly, CarefullyCausal provides the
 user the estimand, a table of causal estimates, a discussion on the
 causal assumptions, relevant diagnostics and
 interpretations/explanations. The key aspects of a causal analyses are
-printed and discussed in detail to help the user in evaluating whether
-the estimated effects can be interpreted as being causal. Currently,
+printed and discussed in detail to help the user evaluate whether the
+estimated effects can be interpreted as being causal. Currently,
 CarefullyCausal can be used in a setting with a fixed-exposure, meaning
 that the exposure does not vary over time.  
 
@@ -48,9 +48,11 @@ illustrated using the NHEFS[^1] data set.
 
 Suppose that we are interested in the causal relation between quitting
 smoking and weight change (in Kilograms). Specifically,we would like to
-know the effect of quitting smoking on someone’s weight change. In order
-to evaluate this causal relation, we assume that there are some
-important confounders we need to adjust for, which includes:  
+know the effect of quitting smoking on someone’s weight change during
+the period 1971-1982 where the first measurement took place in 1971 and
+the second one in 1982. Suppose further that, in order to evaluate this
+causal relation, we assume that there are some important confounders we
+need to adjust for, which includes:  
 sex, race, age, education level, smoke intensity (number of cigarettes
 per day), how long someone has been smoking ( in years), start weight
 (in Kilograms), how much someone exercises (**0:** much exercise, **1:**
@@ -352,8 +354,8 @@ age
 
 <br>
 
-To further inspect the variable coding and the corresponding definition
-we will create a table including the class of the variable.
+To further inspect the variable coding and the corresponding definition,
+a table is created below which also includes the class of the variable.
 <center>
 <table>
 <thead>
@@ -389,7 +391,7 @@ qsmk
 numeric
 </td>
 <td style="text-align:left;">
-Quit smoking, 1: yes, 0: no
+Quit smoking during 1971-1982, 1: yes, 0: no
 </td>
 </tr>
 <tr>
@@ -504,7 +506,7 @@ Age in 1971
 
 We will now shift our focus to actually using the CarefullyCausal
 function. The minimal call requires us to specify the following
-arguments: `formula, data, family and exposure`. Note that you can
+arguments: `formula, data, family` and `exposure`. Note that you can
 always consult the help file within R to see the documentation of
 CarefullyCausal and to learn about all available arguments including an
 explanation. You can access this by simply typing in *CarefullyCausal*
@@ -514,8 +516,10 @@ need for the minimal call.
 - `Formula`, this has the same form as for example when using *glm*
   which is $y\sim x + w$. Here $y$ denotes the outcome of interest
   variable, $x$ denotes the exposure and $w$ is a covariate we want to
-  adjust for
-- `Data`, specify the data frame (data set)
+  adjust for. The $y$ variable should be a numeric vector, $x$ should be
+  a factor when exposure is discrete and adjustment variables
+  $\boldsymbol{w}$ can be any class
+- `Data`, specify the data frame (data set should be a data frame)
 - `Family`, this is the same as in *glm* where it describes the error
   distribution and link function. Here we have two choices: `"gaussian"`
   or `"binomial"`. This depends on the nature of the outcome of
@@ -551,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.454     Inf        2.490        4.270
-#> qsmk1 T-standardization     3.448      0.419     Inf        2.603        4.244
+#> qsmk1 S-standardization     3.381      0.457     Inf        2.496        4.287
+#> qsmk1 T-standardization     3.448      0.512     Inf        2.325        4.330
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -596,21 +600,31 @@ assumptions/diagnostics. We go over each part now in more detail.
 ##### Estimand
 
 The first lines in the output show the *estimand*, which is a precise
-description of your research question. Ideally, this should be decided
-on before the analysis. Nonetheless, by showing the estimand it may
-ideally help you double-check your research question and whether this is
-in line with what you are estimating as shown by the estimand. Moreover,
-it should be noted that the estimand is in counterfactual notation and
-thus explicitly emphasizes that we are interested in causal effects. We
-provide both a conditional and marginal estimand since we provide
-different estimators and different type of estimands correspond to
-different estimators. In essence, the idea of the estimand is the same
-but due to more technical reasons (how the estimators work) we write the
-estimand in a conditional or marginal way. Important to note is that the
-marginal estimand is still adjusting for all the variables like shown in
-the conditional estimand, but we do not write the adjusted variables
-explicitly in the marginal estimand. To learn more about estimands and
-its formulation: [^3] [^4] [^5]
+description of your research question and should be defined before the
+analyses. Defining the estimand requires the user to think through many
+aspects, such as the population in which the research question is being
+asked, the duration and timing of exposure, the definition of the
+exposure and so on. Printing the estimand in the R output might ideally
+be considered as redundant, post-analysis, as it can inform us only
+about basic characteristics. Particularly, the printed estimand can only
+tell us about basic characteristics of the estimand targeted by the
+user, including: the exposure variable, outcome variable, adjustment set
+and counterfactual contrast. Nonetheless, the idea of explicitly showing
+the estimand might serve as a reminder for the user to think through
+whether there is any discrepnancy between the actual estimated effect
+and the question of interest and motivates the user to double-check the
+pre-analysis part of thinking through the research question and
+corresponding estimand. In addition, the estimand uses counterfactual
+notation and therewith emphasizes that we are interested in causal
+effects without ambiguity. We provide both a conditional and marginal
+estimand since we provide different estimators and different type of
+estimands correspond to different estimators. In essence, the idea of
+the estimand is the same but due to more technical reasons (how the
+estimators work) we write the estimand in a conditional or marginal way.
+Important to note is that the marginal estimand is still adjusting for
+all the variables like shown in the conditional estimand, but we do not
+write the adjusted variables explicitly in the marginal estimand. To
+learn more about estimands and its formulation see: [^3] [^4] [^5]
 
 ``` r
 #> Estimand: 
@@ -624,9 +638,9 @@ its formulation: [^3] [^4] [^5]
 
 <br>
 
-We can obtain a description of the estimand from the saved output, in
+We can obtain a description of the estimand from the saved output. In
 this example the CarefullyCausal output was saved in the object named
-*output*. Hence, we call the specific output object.
+*output*. Hence, we call this specific output object.
 
 ``` r
 # Show saved output from $Estimand_interpretation
@@ -648,24 +662,24 @@ output$Estimand_interpretation
 
 ##### Estimators
 
-After the estimand, the estimates are shown in a table including the
-standard errors, s-value and 95% confidence interval. The p-value can
-also be shown by setting `pvalue=TRUE`, but is hidden by default. The
-S-value is a transformation of the p-value by applying
-$-log_2(p-value)$. The S-value is continuum and ranges from 0 to
-infinity, where a p-value of 1 corresponds to a S-value of 0 and a
-p-value of 0 corresponds to a S-value approaching infinity. Intuitively,
-the S-value captures the amount of information in the data against the
-model and quantifies how *suprised* we can be about a specific outome.
-In other words, a very high S-value implies that we would be suprised by
-the findings we found, given all background assumptions and test
-hypotheses. Showing the S-value by default rather than the p-value is
-motivated by that in practice a lot of studies dichotomize settings
-based on a single cut-off value (e.g. $0.05$) where below that value it
-is interpreted as *useful* and above it is interpreted as *not useful*.
-In this way the focus is generally purely on the statistical
-significance and tends to result in underacknowledgment of the practical
-significance.[^6] [^7] [^8]
+After displaying the estimand, different estimators are shown in a table
+with corresponding estimates, standard errors, s-values and 95%
+confidence intervals. The p-values can also be shown by setting
+`pvalue=TRUE`, but is hidden by default. The S-value is a transformation
+of the p-value by applying $-log_2(p-value)$. The S-value is continuum
+and ranges from 0 to infinity, where a p-value of 1 corresponds to a
+S-value of 0 and a p-value of 0 corresponds to a S-value approaching
+infinity. Intuitively, the S-value captures the amount of information in
+the data against the model and quantifies how *suprised* we can be about
+a specific outome. In other words, a very high S-value implies that we
+would be suprised by the findings we found, given all background
+assumptions and test hypotheses. Showing the S-value by default rather
+than the p-value is motivated by that in practice a lot of studies
+dichotomize settings based on a single cut-off value (e.g $0.05$) where
+below that value it is interpreted as *useful* and above it is
+interpreted as *not useful*. In this way the focus is generally purely
+on the statistical significance and tends to result in
+underacknowledgment of the practical significance.[^6] [^7] [^8]
 
 CarefullyCausal currently supports five different estimators, as shown
 below, where key characteristics are listed below:
@@ -691,29 +705,65 @@ below, where key characteristics are listed below:
   distinction is made between different standardization approaches,
   hence the two different namings. The names are inspired by the machine
   learning literature where similar ideas are generalized and clear
-  distinctions are made between different approaches such as the
-  S-learner and T-learner[^13]. The S-learner and T-learner can be
-  viewed as two different standardization approaches where the S-learner
-  uses a single model and the T-learner uses two models. Specifically,
-  with the S-learner a single model is fitted on all data and then the
-  counterfactual effects are predicted under all exposure levels. In
-  contrast, the T-learner first splits the data based on the exposure
-  variable and then fits a model per exposure level. Each model is then
-  used to predict the counterfactual effects for the entire sample under
-  each exposure level. To make a clear link to the causal inference
-  terminology, we introduced the names S-standardization and
-  T-standardization. A user can add interactions in the
-  S-standardization model between a covariate and exposure using the
-  `interaction` argument. When no interactions are included it will be
-  equivalent to outcome regression and when all possible interactions
-  are considered between the adjustment set and exposure it is
-  equivalent to T-standardization. Currently, CarefullyCausal only
-  supports `glm`. Bootstrapping is used to obtain standard errors and
-  the p-value and are controlled by arguments `boot1` and `boot2`.
+  distinctions are made between different approaches and respectively
+  referred to as S-learner and T-learner[^13]. The S-learner and
+  T-learner can be viewed as two different standardization approaches
+  where the S-learner uses a single model and the T-learner uses two
+  models. Specifically, with the S-learner a single model is fitted on
+  all data and then the counterfactual effects are predicted under all
+  exposure levels using this fitted model. In contrast, the T-learner
+  first splits the data based on the exposure variable and then fits a
+  model per exposure level (subset of data). Each model is then used to
+  predict the counterfactual effects for the entire sample under each
+  exposure level. A clear distinction between slightly different
+  approaches is preferable, but to make a clear link to the causal
+  inference terminology such that it sounds more familiar, we introduced
+  the names S-standardization and T-standardization. When using
+  S-standardization, the user can add interactions between any covariate
+  and the exposure using the `interaction` argument. When no
+  interactions are included it will be equivalent to outcome regression
+  and when all possible interactions are considered between the
+  adjustment set and exposure it is equivalent to T-standardization.
+  Currently, CarefullyCausal only supports `glm`. Bootstrapping is used
+  to obtain standard errors and p-values and the number of iterations
+  are respectively controlled by arguments `boot1` and `boot2`.
   Moreover, a normal confidence interval or bias-corrected accelerated
-  confidence interval can be computed using `confidence`. These
-  estimators do not support a continuous exposure.
-- *Targeted Maximum Likelihood Estimation*:
+  confidence interval can be computed and specified using the
+  `confidence` argument. Note that these estimators do support
+  continuous exposures.
+- *Targeted Maximum Likelihood Estimation (TMLE)*: TMLE is a two-stage
+  estimation procedure. First, there is the g-estimation part which is
+  just like S-standardization where we model the outcome of interest.
+  The default within the TMLE framework is to use the `SuperLearner`
+  function from the `SuperLearner` package. In CarefullyCausal we also
+  integrated `SuperLearner` for this step and the user can specify the
+  algorithm library using the `outcome_SL_library` argument using the
+  exact same format as in the `SuperLearner` function. The default is
+  that the library only includes `c("SL.glm")` and thus implies that
+  simply glm is used. The second stage updates the model from the first
+  stage by incorporating information in the treatment assignment
+  mechanism and is referred to as the targeting step. For this second
+  stage we need to estimate propensity scores and is by default done
+  using `SuperLearner`. Within CarefullyCausal this is also the default
+  option where `ps_method="SL"` and the same algorithm library is used
+  as specified for stage one and thus follows argument
+  `outcome_SL_library`. However, the user can specify a different
+  library specifically for estimating the propensity scores using
+  SuperLearner by using the argument `ps_SL_library`. Besides the option
+  of specifying the propensity score estimation library, the user can
+  also specify a different formula for estimating the propensity scores
+  using argument `ps_formula`. By default, the formula used for
+  estimating the propensity scores will be
+  $exposure \sim input \ covariates$, meaning it uses all the covariates
+  that were input in the initial CarefullyCausal call. However, you can
+  fully customize what variables to include or exclude for estimating
+  the propensity scores, even variables that were initially not input.
+  Besides using `Superlearner` for this estimation step, you can also
+  use `CBPS` using argument `ps_method="cbps"`. For complete
+  flexibility, you can input your own estimated propensity scores using
+  argument `ps_tmle` and if used it will ignore all of the above
+  arguments. Note, CarefullyCausal implements currently only tmle for
+  dichotomous exposures.
 
 ``` r
 #> Treatment effect: 
