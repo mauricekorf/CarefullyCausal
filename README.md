@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.490     Inf        2.388        4.308
-#> qsmk1 T-standardization     3.448      0.494     Inf        2.413        4.349
+#> qsmk1 S-standardization     3.381      0.471     Inf        2.470        4.316
+#> qsmk1 T-standardization     3.448      0.460     Inf        2.500        4.302
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -1544,7 +1544,8 @@ output$Assumptions$positivity$ps_table
 output$Assumptions$positivity$plots[[1]]
 ```
 
-<center>
+<div align="center">
+
 <table>
 <thead>
 <tr>
@@ -1574,9 +1575,11 @@ observed exposure: 1
 </tr>
 </tbody>
 </table>
-</center>
+
+</div>
+
 <center>
-<img src="man/figures/README-Ps plot3 Positivity Assumptions-1.png" width="60%" />
+<img src="man/figures/README-Ps plot3 Positivity Assumptions-1.png" width="60%" style="display: block; margin: auto;" />
 </center>
 
 <br>
