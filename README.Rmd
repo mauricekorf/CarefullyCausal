@@ -389,12 +389,12 @@ knitr::kable(output$Assumptions$positivity$ps_table)
 ```
 </div>
 
-<center>
+<div align="center">
 ```{r Ps plot3 Positivity Assumptions, eval=TRUE, echo=FALSE,out.width='60%', fig.align='center'}
 output$Assumptions$positivity$plots[[1]]
 
 ```
-</center>
+</div>
 <br>
 
 
