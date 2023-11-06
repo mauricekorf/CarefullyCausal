@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.475     Inf        2.519        4.383
-#> qsmk1 T-standardization     3.448      0.440     Inf        2.572        4.296
+#> qsmk1 S-standardization     3.381      0.520     Inf        2.379        4.418
+#> qsmk1 T-standardization     3.448      0.459     Inf        2.674        4.475
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -1652,13 +1652,13 @@ the saved output object, you can also find an overall interpretation of
 the study in the saved output. It is by no means a replacement of
 actually interpreting all the assumptions and the effect estimates
 thoroughly. However, the goal is to provide you with a template to show
-what a interpretation of a causal study should include and discuss. In
+what an interpretation of a causal study should include and discuss. In
 practice, you should of course be more elaborate on the assumptions but
 this template briefly summarises and highlights the key components that
 the researcher should consider when providing a causal interpretation.
 
 ``` r
-# We can obtain an explanation/interpretation from the saved output object named "output"
+# We can obtain the overall interpretation of the study from the saved output object named "output"
 output$Interpretation
 
 #> [1] "This study evaluated the effect of qsmk on wt82_71, while adjusting for covariates: race, sex,
