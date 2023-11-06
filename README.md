@@ -514,11 +514,11 @@ in the help tab in R. Nonetheless, we summarise the key arguments we
 need for the minimal call.
 
 - `Formula`, this has the same form as for example when using *glm*
-  which is $y\sim x + w$. Here $y$ denotes the outcome of interest
-  variable, $x$ denotes the exposure and $w$ is a covariate we want to
-  adjust for. The $y$ variable should be a numeric vector, $x$ should be
-  a factor when exposure is discrete and adjustment variables
-  $\boldsymbol{w}$ can be any class
+  which is $y\sim x + \boldsymbol{w}$. Here $y$ denotes the outcome of
+  interest variable, $x$ denotes the exposure and $\boldsymbol{w}$ are
+  covariates we want to adjust for. The $y$ variable should be a numeric
+  vector, $x$ should be a factor when exposure is discrete and
+  adjustment variables $\boldsymbol{w}$ can be any class
 - `Data`, specify the data frame (data set should be a data frame)
 - `Family`, this is the same as in *glm* where it describes the error
   distribution and link function. Here we have two choices: `"gaussian"`
@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.453     Inf        2.630        4.408
-#> qsmk1 T-standardization     3.448      0.543     Inf        2.339        4.466
+#> qsmk1 S-standardization     3.381      0.490     Inf        2.388        4.308
+#> qsmk1 T-standardization     3.448      0.494     Inf        2.413        4.349
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -606,25 +606,25 @@ aspects, such as the population in which the research question is being
 asked, the duration and timing of exposure, the definition of the
 exposure and so on. Printing the estimand in the R output might ideally
 be considered as redundant, post-analysis, as it can inform us only
-about basic characteristics. Particularly, the printed estimand can only
-tell us about basic characteristics of the estimand targeted by the
-user, including: the exposure variable, outcome variable, adjustment set
-and counterfactual contrast. Nonetheless, the idea of explicitly showing
-the estimand might serve as a reminder for the user to think through
-whether there is any discrepnancy between the actual estimated effect
-and the question of interest and motivates the user to double-check the
-pre-analysis part of thinking through the research question and
-corresponding estimand. In addition, the estimand uses counterfactual
-notation and therewith emphasizes that we are interested in causal
-effects without ambiguity. We provide both a conditional and marginal
-estimand since we provide different estimators and different type of
-estimands correspond to different estimators. In essence, the idea of
-the estimand is the same but due to more technical reasons (how the
-estimators work) we write the estimand in a conditional or marginal way.
-Important to note is that the marginal estimand is still adjusting for
-all the variables like shown in the conditional estimand, but we do not
-write the adjusted variables explicitly in the marginal estimand. To
-learn more about estimands and its formulation see: [^3] [^4] [^5]
+about basic characteristics. Particularly, the estimand targeted by the
+user which is printed in R can only inform us about the exposure
+variable, outcome variable, adjustment set and counterfactual contrast.
+Nonetheless, the idea of explicitly showing the estimand might serve as
+a reminder for the user to think through whether there is any
+discrepnancy between the actual estimated effect and the question of
+interest and motivates the user to double-check the pre-analysis part of
+thinking through the research question and corresponding estimand. In
+addition, the estimand uses counterfactual notation and therewith
+emphasizes that we are interested in causal effects without ambiguity.
+We provide both a conditional and marginal estimand since we provide
+different estimators and different type of estimands correspond to
+different estimators. In essence, the idea of the estimand is the same
+but due to more technical reasons (how the estimators work) we write the
+estimand in a conditional or marginal way. Important to note is that the
+marginal estimand is still adjusting for all the variables like shown in
+the conditional estimand, but we do not write the adjusted variables
+explicitly in the marginal estimand. To learn more about estimands and
+its formulation see: [^3] [^4] [^5]
 
 ``` r
 #> Estimand: 
@@ -732,8 +732,8 @@ below, where key characteristics are listed below:
   `confidence` argument. Note that these estimators do support
   continuous exposures.
 - *Targeted Maximum Likelihood Estimation (TMLE)*: TMLE is a two-stage
-  estimation procedure. First, there is the g-estimation part which is
-  just like S-standardization where we model the outcome of interest.
+  estimation procedure[^14]. First, there is the g-estimation part which
+  is just like S-standardization where we model the outcome of interest.
   The default within the TMLE framework is to use the `SuperLearner`
   function from the `SuperLearner` package. In CarefullyCausal we also
   integrated `SuperLearner` for this step and the user can specify the
@@ -783,36 +783,46 @@ below, where key characteristics are listed below:
 
 <br>
 
-Below the estimates table the reference exposure level is explicitly
-stated. When having a multi-value exposure then all the contrasts are
-displayed with respect to the reference exposure level for each
-estimator. However, when you would like to change the reference exposure
-level you need to relevel the exposure variable (factor).
-CarefullyCausal by defaults picks the first level as reference level,
-which is the default behavior of R aswell, where the reference level can
-be viewed using argument `level(exposure)`.
+The reference exposure level is explicitly stated below the estimates
+table. In addition, the name of the respective exposure level of
+interest is added to the estimator’s name (in this example adding
+exposure level *“1”*) to avoid any confusion, especially in a
+multi-value exposure setting. In a multi-value exposure setting, all
+respective causal contrasts with respect to the specified reference
+exposure level are shown in the table per estimator. This means that
+when having four exposure levels, there are three contrasts shown per
+estimator. To change the reference exposure level you need *relevel* the
+exposure variable (which should be a factor). CarefullyCausal by
+defaults selects the first level as reference level, which is the
+default behavior of R as well, where the reference level can be viewed
+using argument `level(exposure)`.
 
 The last lines state that you should evaluate whether the difference
 between the estimates is of substance or not. Important to note is that
-there is *not* a best model, but that you should fit different
-estimators to see if they agree and may provide you with a broader
-context to the estimate. If all the estimates are very similar it does
-not guarantuee that the estimates are unbiased but at least it provides
-us with more information than when reporting a single estimate. However,
-if the estimates are very different (*depends on the data, domain and
-assumptions*) and this is considered to be practically important, then
-it should be investigated why. This raises questions such as whether
-particular modelling assumptions are violated? How these are violated?
-and if there is a solution? and so on. So, rather than seeing it is
-about selecting a *best model* it is more to provide you with
-information that might indicate that further inspection is necessary.
+there is *not* a best model, but that you can fit different estimators
+to see if they agree and may provide you with a broader context to the
+estimate. If all the estimates are very similar it does not guarantuee
+that the estimates are unbiased but at least it provides us with more
+information than when reporting a single estimate. However, if the
+estimates are very different (*depends on the data, domain and
+assumptions*) and this is considered to be practically important and not
+simply due to random error, then it should be investigated why. This
+raises questions such as whether particular modelling assumptions are
+violated, how these may be violated and if there is a possible solution.
+So, rather than thinking about selecting a *best* model, CarefullyCausal
+provides different estimates that correspond to different estimators to
+provide you with a broader context and might indicate that further
+inspection is necessary. Our advice is to report all estimates, but to
+discuss one of the estimates in more detail in terms of interpretation.
+In this way, a broader context is also provided to the reader and may
+facilitate an informed discussion.
 
 In this example we have a continuous outcome and thus the estimates are
-interpreted in the units of the outcome variable. When the outcome
-variable is dichotomous, the default is that the estimates are in terms
-of log(odds ratio) but you can specify the arguments `result_type="rr"`
-or `result_type="or"` to get it in terms of risk ratio or odds ratio,
-respectively. <br> <br>
+interpreted in the units of the outcome variable (weight change in Kg).
+However, when the outcome variable is dichotomous, the default is that
+the estimates are in terms of log(odds ratio) but you can specify the
+arguments `result_type="rr"` or `result_type="or"` to get it in terms of
+risk ratio or odds ratio, respectively. <br> <br>
 
 ##### Assumptions and Diagnostics
 
@@ -886,8 +896,34 @@ output$Assumptions$exchangeability$explanation
 
 <br>
 
+Besides the additional explanation/interpretation, we can obtain a
+covariate balance table and covariate balance plots from the saved
+*output* object. Both are generated using the `cobalt` package.[^15] For
+dichotomous and multi-value exposures, the difference in means are
+reported. Here *“M.1.Un”* corresponds to the means in the treated group
+before adjusting, while *“M.0.Un* refers to the control group before
+adjusting. Similarly, *“M.1.Adj”* refers to the means in the treated
+after adjusting and the same holds for the control group denoted by
+*“M.0.Adj”*. The *“Diff.un”* shows the difference in means between the
+treated and control group before adjusting, while *“Diff.Adj* shows this
+respectively after adjusting. Note that this difference in means is
+standardized for continuous covariates but is not standardized (raw) for
+dichtomous covariates, which is the default setting from `cobalt`. Also,
+for dichotomous covariates the difference in means actually refers to
+the difference in proportions. When the exposure is continuous, we use
+correlation-based diagnostics. Specifically, the *treatment-covariate
+Pearson correlation* is shown and when the correlation is zero it
+implies that the treatment and covariate are independent. The
+treatment-covariate Pearson correlation is again displayed before and
+after adjusting, where after adjusting is referred to the GPS-weighted
+sample (*generalized propensity scores*). Ideally, the correlation
+between treatment and any covariate should approach 0 after adjusting as
+it implies independency.[^16] However, it should be noted that a
+*linear* correlation measure is used and thus it only measures *linear
+dependence* and does not capture non-linear relations.
+
 ``` r
-# We can obtain covariate balance table from the saved output object named "output"
+# We can obtain the covariate balance table from the saved output object named "output"
 output$Assumptions$exchangeability$covariate_balance
 ```
 
@@ -1447,9 +1483,14 @@ the variable sex). The terms *unadjusted* and *adjusted* refer to before
 weighting and after weighting, respectively, using the estimated weights
 from the `CBPS` function and package. Ideally, we would like to see
 balancing covariates such that the difference between the means is close
-to zero. However, it should be noted that only variables are balanced
-that are adjusted for and thus we might still have residual confounding
-if we miss important confounders.
+to zero. However, it should be noted that balance can only be achieved
+for covariates that are adjusted for such that complete balance between
+the covariates (by looking at the table and plots) does not guarantee
+unbiased effect estimates. It could be that we have not included some
+important confounders that may be highly unbalanced between the
+different treatment groups and thus would mean we would have residual
+confounding. In other words, we cannot balance things we have not
+measured.
 
 ``` r
 # We can obtain covariate balance plots from the saved output object named "output"
@@ -1462,9 +1503,9 @@ output$Assumptions$exchangeability$balance_plots$sex
 
 ###### Positivity
 
-Just as with the exchangeability, we can obtain a more detailed
-explanation and interpretation of the positivity assumption from the
-saved output object.
+Just as with the exchangeability assumption, we can obtain a more
+detailed explanation and interpretation of the positivity assumption
+from the saved output object.
 
 ``` r
 # We can obtain an explanation/interpretation from the saved output object named "output"
@@ -1487,20 +1528,160 @@ output$Assumptions$positivity
 
 <br>
 
-To get a better idea of potential positivity violations we can obtain a
-propensity score plot. This plots the conditional probability density
-plots of the propensity score.
+To get a better idea of potential positivity violations we can obtain
+the propensity score table and corresponding propensity score plot. The
+propensity score table shows the minimum and maximum of the estimated
+propensity scores for each exposure level. Clear non-overlapping ranges
+can be read off from this table, but also violations when the estimated
+propensity score equals 0 or 1. However, to get a better idea of the
+complete propensity score distribution and the extent of overlap between
+the different exposure groups we provide density distribution plots of
+the propensity scores.
 
 ``` r
 # We can obtain covariate balance plots from the saved output object named "output"
+output$Assumptions$positivity$ps_table
 output$Assumptions$positivity$plots[[1]]
 ```
 
 <center>
-<img src="man/figures/README-Ps plot2 Positivity Assumptions-1.png" width="50%" style="display: block; margin: auto;" />
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+PS range for 1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+observed exposure: 0
+</td>
+<td style="text-align:left;">
+0.0338, 0.6520
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+observed exposure: 1
+</td>
+<td style="text-align:left;">
+0.0685, 0.7709
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<center>
+<img src="man/figures/README-Ps plot3 Positivity Assumptions-1.png" width="60%" />
 </center>
 
 <br>
+
+###### Consistency
+
+For the consistency assumption we provide a more detailed explanation
+and example in the output object.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$consistency
+
+#> [1] "Consistency is twofold, first, consistency implies that the exposure 'qsmk' must be sufficiently
+#>  well-defined so that any variation within the definition of the exposure would not result in a different
+#>  outcome. Secondly, this well-defined exposure must occur in the data since there will otherwise be a
+#>  mismatch between the defined exposure version and the treatment version present in the data. For example,
+#>  suppose you are interested in the effect of BMI reduction (body mass index) on mortality. There are many
+#>  different ways how one can reduce BMI: exercise, diet,smoke, gastric bypass and so on. However, each of
+#>  these treatment versions can have a different effect on mortality, even though they all reduce BMI. For
+#>  example, say the focus is now on exercising where one is specifically interested in the effect of walking
+#>  twice a week for 1 hour (treatment), but there is only data on people who run. Suppose now that is is
+#>  expected that running leads to very different results, such that we cannot assume treatment variation
+#>  irrelevance. Then this would mean that there is a mismatch in the defined exposure and the one observed in
+#>  the data, such that when using the data it actually answers a different causal question than the
+#>  investigator is interested in"
+```
+
+###### No measurement Error
+
+For the no measurement error assumption we provide a brief statement in
+the saved output. Dealing with measurement errors is a large field of
+research and highly depends on the setting given the data, data
+collection processes, measures and so on. Hence, it is limited to a
+general statement and if necessary other sources should be consulted to
+first deal with measurement error.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$no_measurement_error
+
+#> [1] "Measurement errors and thus induced bias are not just limited to observational studies but can occur in
+#>  any study design and  it can occur in the exposure, outcome or confounders."
+```
+
+###### Well-specified model
+
+Just as with the *no measurement error* assumption, we provide for the
+*having a well-specified model* assumption also a brief statement in the
+saved output. It is limited to a general statement as this assumption is
+highly specific to each setting, given the data and models.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Assumptions$well_specified_model
+
+#> [1] "It is assumed that all models are well-specified, such that the respective model includes all relevant
+#> non-linearities and/or statistical interactions. Hence, it should be evaluated whether including for example
+#> squared terms or other transformations are necessary."
+```
+
+<br> <br>
+
+##### Overall Study Interpretation
+
+Besides all the information about the causal assumptions you can find in
+the saved output object, you can also find an overall interpretation of
+the study in the saved output. It is by no means a replacement of
+actually interpreting all the assumptions and the effect estimates
+thoroughly. However, the goal is to provide you with a template to show
+what a interpretation of a causal study should include and discuss. In
+practice, you should of course be more elaborate on the assumptions but
+this template briefly summarises and highlights the key components that
+the researcher should consider when providing a causal interpretation.
+
+``` r
+# We can obtain an explanation/interpretation from the saved output object named "output"
+output$Interpretation
+
+#> [1] "This study evaluated the effect of qsmk on wt82_71, while adjusting for covariates: race, sex,
+#> education, smokeintensity, smokeyrs, wt71, exercise, active, age. Effects were estimated using reference
+#> level:  0, implying all effect estimates (contrasts) should be interpreted with respect to this exposure
+#> level. Specifically, the contrasts considered are:  1 with respect to 0. When deploying outcome regression
+#> the average treatment effect (ATE) is, respectively, estimated to be: 3.381. When using IPTW the respective
+#> estimated ATE are: 3.318. Moreover, S-standardization respectively estimated: 3.381 ,whereas
+#> T-standardization estimated the ATE to be: 3.448. It should be noted that the effects are in terms of the
+#> dependent variable. However, in order to be able to interpret these effects as causal, the investigator
+#> evaluated and assumes that all assumptions seem plausible, specifically the five key assumptions:
+#> (conditional) exchangeability, positivity, consistency, no measurement error and well-specified model.
+#> First, the investigator assumes that (conditional) exchangeability holds such that the set of covariates
+#> race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age is sufficient to completely
+#> eliminate all confounding and selection bias. Unmeasured confounding will always be a potential threat, but
+#> the investigator assumes this to be negligible. The second assumption, positivity, implies that the
+#> investigator evaluated and confirmed that within every stratum of variables adjusted for, there are both
+#> exposed and unexposed (non-deterministic assignment). Thirdly, the investigator argues that the exposure
+#> variable qsmk is sufficiently well-defined such that any variation within the definition of the exposure
+#> would not result in a different outcome. Fourthly, the investigator assumes that no substantial measurement
+#> errors are present such that no substantial measurement bias is induced. Lastly, the investigator evaluated
+#> and assumes that all models are well-specified, such that all relevant non-linearities and/or statistical
+#> interactions are taken into account. Given that these above mentioned assumptions seem plausible, the
+#> investigator also evaluated whether the different models yielded (very) different results and if so it was
+#> further investigated as to why these differences appeared."
+```
+
+<br> <br>
 
 [^1]: National Health and Nutrition Examination Survey Data I
     Epidemiologic Follow-up Study,
@@ -1560,3 +1741,15 @@ output$Assumptions$positivity$plots[[1]]
     Metalearners for estimating heterogeneous treatment effects using
     machine learning. Proceedings of the national academy of sciences,
     116(10), 4156-4165.
+
+[^14]: Gruber, S., & Van Der Laan, M. (2012). tmle: an R package for
+    targeted maximum likelihood estimation. Journal of Statistical
+    Software, 51, 1-35.
+
+[^15]: Greifer N (2023). *cobalt: Covariate Balance Tables and Plots*. R
+    package version 4.5.1, <https://CRAN.R-project.org/package=cobalt>.
+
+[^16]: Austin, P. C. (2019). Assessing covariate balance when using the
+    generalized propensity score with quantitative or continuous
+    exposures. Statistical methods in medical research, 28(5),
+    1365-1377.
