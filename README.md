@@ -10,7 +10,7 @@ The goal of CarefullyCausal is to provide the user a practical guide
 when doing causal analyses. Particularly, CarefullyCausal provides the
 user the estimand, a table of causal estimates, a discussion on the
 causal assumptions, relevant diagnostics and
-interpretations/explanations. The key aspects of a causal analyses are
+interpretations/explanations. The key aspects of a causal analysis are
 printed and discussed in detail to help the user evaluate whether the
 estimated effects can be interpreted as being causal. Currently,
 CarefullyCausal can be used in a setting with a fixed-exposure, meaning
@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.514     Inf        2.335        4.351
-#> qsmk1 T-standardization     3.448      0.509     Inf        2.392        4.386
+#> qsmk1 S-standardization     3.381      0.474     Inf        2.464        4.320
+#> qsmk1 T-standardization     3.448      0.500     Inf        2.406        4.366
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 

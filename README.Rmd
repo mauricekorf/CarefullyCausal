@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-The goal of CarefullyCausal is to provide the user a practical guide when doing causal analyses. Particularly, CarefullyCausal provides the user the estimand, a table of causal estimates, a discussion on the causal assumptions, relevant diagnostics and interpretations/explanations. The key aspects of a causal analyses are printed and discussed in detail to help the user evaluate whether the estimated effects can be interpreted as being causal. Currently, CarefullyCausal can be used in a setting with a fixed-exposure, meaning that the exposure does not vary over time.\
+The goal of CarefullyCausal is to provide the user a practical guide when doing causal analyses. Particularly, CarefullyCausal provides the user the estimand, a table of causal estimates, a discussion on the causal assumptions, relevant diagnostics and interpretations/explanations. The key aspects of a causal analysis are printed and discussed in detail to help the user evaluate whether the estimated effects can be interpreted as being causal. Currently, CarefullyCausal can be used in a setting with a fixed-exposure, meaning that the exposure does not vary over time.\
 
 Some key features:\
 
