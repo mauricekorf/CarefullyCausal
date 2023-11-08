@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.520     Inf        2.379        4.418
-#> qsmk1 T-standardization     3.448      0.459     Inf        2.674        4.475
+#> qsmk1 S-standardization     3.381      0.514     Inf        2.335        4.351
+#> qsmk1 T-standardization     3.448      0.509     Inf        2.392        4.386
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -698,7 +698,7 @@ below, where key characteristics are listed below:
   to run a weighted glm with the IP weights to get the correct
   corresponding standard errors. By default `CBPS` is implemented, but
   the user can also input their own *IP weights* as a vector using the
-  `ip_weights_iptw` argument and offers fully flexibility.
+  `ip_weights_iptw` argument and offers full flexibility.
 - *S-and-T-standardization*: these two approaches are generally referred
   within the causal inference literature to the broad approach of
   *standardization* (G-computation). In CarefullyCausal an explicit
@@ -1613,8 +1613,8 @@ output$Assumptions$consistency
 ###### No measurement Error
 
 For the no measurement error assumption we provide a brief statement in
-the saved output. Dealing with measurement errors is a large field of
-research and highly depends on the setting given the data, data
+the saved output. Dealing with measurement errors is field of research
+on its own and highly depends on the setting given the data, data
 collection processes, measures and so on. Hence, it is limited to a
 general statement and if necessary other sources should be consulted to
 first deal with measurement error.
@@ -1647,12 +1647,12 @@ output$Assumptions$well_specified_model
 
 ##### Overall Study Interpretation
 
-Besides all the information about the causal assumptions you can find in
-the saved output object, you can also find an overall interpretation of
-the study in the saved output. It is by no means a replacement of
-actually interpreting all the assumptions and the effect estimates
-thoroughly. However, the goal is to provide you with a template to show
-what an interpretation of a causal study should include and discuss. In
+Besides all the information about the causal assumptions that you can
+find in the saved output object, you can also find an overall
+interpretation of the study. It is by no means a replacement of actually
+interpreting all the assumptions and the effect estimates thoroughly.
+However, the goal is to provide you with a template to show what an
+interpretation of a causal study should include and discuss. In
 practice, you should of course be more elaborate on the assumptions but
 this template briefly summarises and highlights the key components that
 the researcher should consider when providing a causal interpretation.
