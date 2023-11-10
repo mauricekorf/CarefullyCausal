@@ -555,8 +555,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.474     Inf        2.464        4.320
-#> qsmk1 T-standardization     3.448      0.500     Inf        2.406        4.366
+#> qsmk1 S-standardization     3.381      0.500     Inf        2.332        4.293
+#> qsmk1 T-standardization     3.448      0.533     Inf        2.381        4.470
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -572,7 +572,11 @@ output
 #> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
 #> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
 #> 
-#> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
+#> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum 
+#> of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). 
+#> This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots 
+#> (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) 
+#>  and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
 #>  
 #>                        PS range for 1
 #> observed exposure: 0   0.0338, 0.6520
