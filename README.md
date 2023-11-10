@@ -3,6 +3,7 @@
 
 # CarefullyCausal
 
+<!-- comment -->
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -555,8 +556,8 @@ output
 #>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
 #> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
 #> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.500     Inf        2.332        4.293
-#> qsmk1 T-standardization     3.448      0.533     Inf        2.381        4.470
+#> qsmk1 S-standardization     3.381      0.433     Inf        2.528        4.225
+#> qsmk1 T-standardization     3.448      0.483     Inf        2.535        4.428
 #> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
 #> 
 #> Reference exposure level: 0 
@@ -1614,14 +1615,16 @@ output$Assumptions$consistency
 #>  investigator is interested in"
 ```
 
+<br>
+
 ###### No measurement Error
 
 For the no measurement error assumption we provide a brief statement in
-the saved output. Dealing with measurement errors is field of research
+the saved output. Dealing with measurement errors is a field of research
 on its own and highly depends on the setting given the data, data
 collection processes, measures and so on. Hence, it is limited to a
-general statement and if necessary other sources should be consulted to
-first deal with measurement error.
+general statement and, if necessary, other sources should be consulted
+to deal with the specific measurement error at hand.
 
 ``` r
 # We can obtain an explanation/interpretation from the saved output object named "output"
@@ -1630,6 +1633,8 @@ output$Assumptions$no_measurement_error
 #> [1] "Measurement errors and thus induced bias are not just limited to observational studies but can occur in
 #>  any study design and  it can occur in the exposure, outcome or confounders."
 ```
+
+<br>
 
 ###### Well-specified model
 

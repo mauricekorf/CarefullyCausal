@@ -419,10 +419,10 @@ output$Assumptions$consistency
 #>  investigator is interested in"
 
 ```
-
+<br>
 
 ###### No measurement Error
-For the no measurement error assumption we provide a brief statement in the saved output. Dealing with measurement errors is field of research on its own and highly depends on the setting given the data, data collection processes, measures and so on. Hence, it is limited to a general statement and if necessary other sources should be consulted to first deal with measurement error.
+For the no measurement error assumption we provide a brief statement in the saved output. Dealing with measurement errors is a field of research on its own and highly depends on the setting given the data, data collection processes, measures and so on. Hence, it is limited to a general statement and, if necessary, other sources should be consulted to deal with the specific measurement error at hand.
 
 ```{r No measurement error Assumptions, eval=FALSE}
 # We can obtain an explanation/interpretation from the saved output object named "output"
@@ -431,7 +431,7 @@ output$Assumptions$no_measurement_error
 #> [1] "Measurement errors and thus induced bias are not just limited to observational studies but can occur in
 #>  any study design and  it can occur in the exposure, outcome or confounders."
 ```
-
+<br>
 
 ###### Well-specified model
 Just as with the *no measurement error* assumption, we provide for the *having a well-specified model* assumption also a brief statement in the saved output. It is limited to a general statement as this assumption is highly specific to each setting, given the data and models.
