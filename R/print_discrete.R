@@ -86,7 +86,6 @@ print.ccdisc <- function(h){
     cat("in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). \n")
   }
 
-
   if (covariates==""){
     cat("\n[2] Positivity: is satisfied when,unconditionally, both exposed and unexposed individuals are observed \n")
     cat("as it is an unconditional setting,exposure should be assigned randomly with 0<Pr<1 \n")
