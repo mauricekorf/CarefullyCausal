@@ -91,9 +91,10 @@ print.ccdisc <- function(h){
     cat("\n[2] Positivity: is satisfied when,unconditionally, both exposed and unexposed individuals are observed \n")
     cat("as it is an unconditional setting,exposure should be assigned randomly with 0<Pr<1 \n")
   } else {
-    cat("\n[2] Positivity: is satisfied when both exposed and unexposed individuals are observed",
-        "within every stratum of variables adjusted for (",covariates,").","This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots",
-        "(or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) ")
+    cat("\n[2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum \n")
+    cat("of variables adjusted for (",covariates,"). \n")
+    cat("This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots \n")
+    cat("(or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) \n ")
     cat("and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score \n \n")
     ps.table(h)
   }
