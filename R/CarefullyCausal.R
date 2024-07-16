@@ -20,7 +20,7 @@
 #' @param data input your data frame
 #' @param family a description of the error distribution and link function. It expects a character string, either `"gaussian"` or `"binomial"` depending on specified outcome of interest
 #' @param exposure specify the exposure variable as character string (e.g.`"treatment"`)
-#' @param pvalue `TRUE` or `FALSE`, by default is `FALSE` and does not show the p-value
+#' @param pvalue `TRUE` or `FALSE`, by default is `TRUE` and shows the p-value
 #' @param interaction Interactions that are included specifically in the S-standardization method. These are interactions
 #' between covariates and the exposure. General interaction terms or effect modifications should be specified in the `formula` argument
 #' @param boot1 the number of bootstrap iterations to get the standard error for S-standardization and T-standardization. By default set to 100 iterations
