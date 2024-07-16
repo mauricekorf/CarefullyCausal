@@ -63,7 +63,7 @@ ps.table.intern <- function(glm_output,data,outcome,covariates,exposure){
     for (w in 1:length(list_ps)) {
 
       for (z in 1:length(list_ps[[w]])){
-        list_ps[[w]][[z]] <-format(round(list_ps[[w]][[z]],4),nsmall=4)
+        list_ps[[w]][[z]] <-round(list_ps[[w]][[z]],4)
       }
     }
 
@@ -1178,7 +1178,7 @@ tmle_cc <- function(object2,input_data,exposure,outcome,covariates,family, outco
     tmle_se <- sqrt(tmle_var)
     conf_low <- tmle_ate- 1.96*tmle_se
     conf_high <- tmle_ate + 1.96*tmle_se
-    pval <- format(round(2 * pnorm(-abs(tmle_ate / tmle_se)),4),nsmall=4)
+    pval <- round(2 * pnorm(-abs(tmle_ate / tmle_se)),4)
   } else if (result_type=="rr" & family=="binomial"){
     # rr
     # EIC equation is from tmle() source code. It is the EIC for log(RR) -> calcParameters() function in tmle
@@ -1191,7 +1191,7 @@ tmle_cc <- function(object2,input_data,exposure,outcome,covariates,family, outco
     tmle_se <- sqrt(tmle_var) #in log
     conf_low <- exp(logRR- 1.96*tmle_se)
     conf_high <- exp(logRR+ 1.96*tmle_se)
-    pval <- format(round(2 * pnorm(-abs(logRR/sqrt(tmle_se))),4),nsmall=4)
+    pval <- round(2 * pnorm(-abs(logRR/sqrt(tmle_se))),4)
   } else if (result_type=="or" & family=="binomial"){
     #mor
     # This one describes the Delta-method approach: has some criticism (eg. negative bound symmetric etc.)
@@ -1211,7 +1211,7 @@ tmle_cc <- function(object2,input_data,exposure,outcome,covariates,family, outco
     tmle_se <- sqrt(tmle_var)
     conf_low <- exp(log(tmle_ate)- 1.96*tmle_se)
     conf_high <- exp(log(tmle_ate) + 1.96*tmle_se)
-    pval <- format(round(2 * pnorm(-abs(log(tmle_ate) / tmle_se)),4),nsmall=4)
+    pval <- round(2 * pnorm(-abs(log(tmle_ate) / tmle_se)),4)
   } else if (family=="gaussian"){
 
     Q_1_update_pr <- (max.Y-min.Y)*Q_1_update_pr+min.Y
@@ -1228,7 +1228,7 @@ tmle_cc <- function(object2,input_data,exposure,outcome,covariates,family, outco
     tmle_se <- sqrt(tmle_var)
     conf_low <- tmle_ate- 1.96*tmle_se
     conf_high <- tmle_ate + 1.96*tmle_se
-    pval <- format(round(2 * pnorm(-abs(tmle_ate / tmle_se)),4),nsmall=4)
+    pval <- round(2 * pnorm(-abs(tmle_ate / tmle_se)),4)
   }
 
 
