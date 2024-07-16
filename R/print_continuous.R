@@ -30,7 +30,7 @@ print.cccont <- function(h){
 
   }
   cat("\nTreatment effect: \n")
-  h[2]<- lapply(h[2],round,3)
+  h[[2]] <- format(round(output[[2]],3),nsmall=3) #to keep 000 as decimals
   print(h[[2]])
   if(family=="binomial" & result_type=="rr") {
     cat("\nInterpretation is in terms of risk ratio (rr) \n")
