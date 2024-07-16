@@ -43,7 +43,7 @@ print.ccdisc <- function(h){
     cat("*Please see output at $Estimand_interpretation for details \n \n")
   }
   cat("\nTreatment effect: \n")
-
+  format(round(output[[2]],3),nsmall=3)
   print(h[[2]])
   cat("\nReference exposure level:",levels(factor(object[,exposure]))[1],"\n")
   if(family=="binomial" & result_type=="rr") {
