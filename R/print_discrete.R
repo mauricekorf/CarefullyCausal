@@ -15,8 +15,8 @@ print.ccdisc <- function(h){
   family= as.character(h[[3]][[5]])
   result_type = as.character(h[[3]][[6]])
   std = as.character(h[[3]][[8]])
-  min_estimate = as.character(round(min(h[[2]][[1]]),4))
-  max_estimate = as.character(round(max(h[[2]][[1]]),4))
+  min_estimate = as.character(format(round(min(h[[2]][[1]]),4),nsmall=4))
+  max_estimate = as.character(format(round(max(h[[2]][[1]]),4),nsmall=4))
 
 
   if (covariates=="") {
