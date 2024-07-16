@@ -51,7 +51,7 @@
 #'
 #' @examples
 #' @export
-CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=FALSE, interaction=NULL,boot1=100,boot2=100,standardization=TRUE,bins=10,confidence="norm",result_type="log",
+CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRUE, interaction=NULL,boot1=100,boot2=100,standardization=TRUE,bins=10,confidence="norm",result_type="log",
                             outcome_SL_library=c("SL.glm"),ps_SL_library=NULL,ps_method="SL", ps_formula=NULL, ps_tmle=NULL,
                             ip_weights_iptw=NULL)
 {
