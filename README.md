@@ -555,14 +555,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.527   0.000     Inf        2.349
-#> qsmk1 T-standardization     3.448      0.529   0.000     Inf        2.366
+#> qsmk1 S-standardization     3.381      0.471   0.000     Inf        2.466
+#> qsmk1 T-standardization     3.448      0.523   0.000     Inf        2.506
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.415
-#> qsmk1 T-standardization         4.441
+#> qsmk1 S-standardization         4.313
+#> qsmk1 T-standardization         4.558
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -625,13 +625,17 @@ thinking through the research question and corresponding estimand. In
 addition, the estimand uses counterfactual notation and therewith
 emphasizes that we are interested in causal effects without ambiguity.
 Currently, `CarefullyCausal` only provides the average treatment effect
-and thus estimand depicted is marginal. We do list the adjustment set
-below the estimand. To learn more about estimands and its formulation
-see: [^3] [^4] [^5]
+and thus the estimand depicted in the output is marginal. When the
+outcome of interest is continuous the estimand will be defined as a risk
+difference, however, when the outcome is dichotomous the estimand will
+be displayed as a risk ratio, odds ratio, or log odds ratio depending on
+the input arguments. Below the estimand, the adjustment set is shown. To
+learn more about estimands and its formulation see: [^3] [^4] [^5]
 
 ``` r
 #> Estimand: Average Treatment Effect (Marginal)
 #> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
+#> 
 #> Adjustment Set: race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age
 #> *Please see output at $Estimand_interpretation for details 
 ```
@@ -639,7 +643,7 @@ see: [^3] [^4] [^5]
 <br>
 
 We can obtain a description of the estimand from the saved output. In
-this example the CarefullyCausal output was saved in the object named
+this example the `CarefullyCausal` output was saved in the object named
 *output*. Hence, we call this specific output object.
 
 ``` r
@@ -647,15 +651,12 @@ this example the CarefullyCausal output was saved in the object named
 output$Estimand_interpretation
 
 #> [1] "The estimand shows the average causal effect in the population of interest given the different exposure
-#> regimes. More specifically, the effect of receiving exposure level 1 with respect to the reference exposure
-#> level 0. When adjusting for a set of covariates (race, sex, education, smokeintensity, smokeyrs, wt71,
-#> exercise, active, age) the estimand is displayed in either a conditional or marginal way. Particularly,
-#> defining the estimand depends on the approach/model used. For example, outcome regression has a conditional
-#> estimand while IPTW has a marginal estimand. The T-standardization approach also has a marginal estimand
-#> while for the S-standardization it depends on whether interactions between treatment and covariates are
-#> taken into account. When no interactions are considered, then it is the same as outcome regression and
-#> thus has a conditional estimand, however when all interactions are considered then it is like
-#> T-standardization and thus has a marginal estimand."
+#> regimes. More specifically, the effect when everybody would have received exposure level 1 with respect to when #> everybody would have received exposure level 0 when adjusting for a set of covariates (race, sex, education, 
+#> smokeintensity, smokeyrs, wt71, exercise, active, age)  It should, however, be noted that only a few basic 
+#> properties can be inferred from this estimand including: outcome of interest, exposure variable, contrast, and 
+#> adjusted for variables. This means that many things cannot be inferred, such as definition of exposure,
+#> information on target population, duration, timing among many other aspects. This basic estimand should 
+#> nonetheless match with the question of interest"
 ```
 
 <br>
