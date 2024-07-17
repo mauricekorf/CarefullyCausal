@@ -21,9 +21,10 @@ Some key features:
 
 - **Setting**: Fixed-exposure
 - **Outcome of interest**: can be dichotomous or continuous
-- **Exposure of interest**: can be dichotomous, multi-value (max 4
-  levels) or continuous
-- **Effect measures**: can be in log(odds), risk ratio or odds ratio
+- **Exposure of interest**: can be dichotomous, multicategorical (max 4
+  levels), or continuous
+- **Effect measures**: can be in risk difference, log(odds), risk ratio,
+  or odds ratio
 
 ## Installation
 
@@ -543,22 +544,26 @@ output <- CarefullyCausal(wt82_71 ~ qsmk + race + sex + education + smokeintensi
 # Print the output
 output
 #> 
-#> Estimand: 
-#> Conditional 
-#> E[wt82_71^qsmk=1|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]  -  E[wt82_71^qsmk=0|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]
-#> 
-#> Marginal 
+#> Estimand: Average Treatment Effect (Marginal) 
 #> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
+#> 
+#> Adjustment Set: race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age 
 #> *Please see output at $Estimand_interpretation for details 
 #>  
 #> 
 #> Treatment effect: 
-#>                          Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
-#> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
-#> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.433     Inf        2.528        4.225
-#> qsmk1 T-standardization     3.448      0.483     Inf        2.535        4.428
-#> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
+#>                          Estimate Std. Error P-value S-value 95%.CI.lower
+#> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
+#> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
+#> qsmk1 S-standardization     3.381      0.481   0.000     Inf        2.489
+#> qsmk1 T-standardization     3.448      0.507   0.000     Inf        2.458
+#> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
+#>                          95%.CI.upper
+#> qsmk1 outcome regression        4.246
+#> qsmk1 IPTW                      4.286
+#> qsmk1 S-standardization         4.374
+#> qsmk1 T-standardization         4.447
+#> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
 #> 
@@ -569,9 +574,7 @@ output
 #> 
 #> To interpret these effects as causal, the following key assumptions must be satisfied: 
 #> 
-#> [1] Conditional exchangeability: implies that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is enough to completely eliminate 
-#> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
-#> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
+#> [1] Conditional exchangeability requires that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is sufficient to completely eliminate all confounding and selection bias between "qsmk" and "wt82_71". See the covariate balance table ($Assumptions$exchangeability$covariate_balance) in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
 #> 
 #> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum 
 #> of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). 
