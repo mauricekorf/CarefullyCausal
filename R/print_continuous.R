@@ -25,11 +25,11 @@ print.cccont <- function(h){
 
   } else if (family=="binomial" & result_type=="log"){
 
-    cat(cat(cat(cat(paste0("ln[ Odds(E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]) ]", "\n")))
+    cat(cat(cat(cat(paste0("ln[ Odds(E[",outcome,"^",exposure,"=a+1","])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=a","]) ]", "\n")))
 
   } else if (family=="binomial" & result_type=="or"){
 
-    cat(cat(cat(cat(paste0("Odds(E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","])", "\n")))
+    cat(cat(cat(cat(paste0("Odds(E[",outcome,"^",exposure,"=a+1","])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=a","])", "\n")))
 
   } else { #continuous outcome (originals scale of outcome, risk diff)
 
