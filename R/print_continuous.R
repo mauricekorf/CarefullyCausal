@@ -19,15 +19,15 @@ print.cccont <- function(h){
 
   cat("\nEstimand: Average Treatment Effect (Marginal) \n")
 
-  if(family=="binomial" & result_type=="rr"){
+  if(family=="binomial" & result_type=="rr"){ # RR estimand
 
     cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]", "\n")))
 
-  } else if (family=="binomial" & result_type=="log"){
+  } else if (family=="binomial" & result_type=="log"){ #LOG(ODDS) estimand
 
     cat(cat(cat(cat(paste0("ln[ Odds(E[",outcome,"^",exposure,"=a+1","])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=a","]) ]", "\n")))
 
-  } else if (family=="binomial" & result_type=="or"){
+  } else if (family=="binomial" & result_type=="or"){ #ODDS estimand
 
     cat(cat(cat(cat(paste0("Odds(E[",outcome,"^",exposure,"=a+1","])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=a","])", "\n")))
 
@@ -74,8 +74,9 @@ print.cccont <- function(h){
     cat("\n[1] Marginal exchangeability: implies that,unconditionally,no confounding nor selection bias is present \n")
     cat("this is obtained in an ideal randomized experiment design \n")
   } else {
-    cat(cat(cat("\n[1] Conditional exchangeability: implies that adjusting for "), "\"", covariates,"\"",sep = ""),"is enough to completely eliminate \n")
-    cat("all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) \n")
+    cat(cat(cat("\n[1] Conditional exchangeability requires that adjusting for "), "\"", covariates,"\"",sep = ""),"is sufficient to completely eliminate ")
+    cat(cat(cat(cat("all confounding and selection bias between "),"\"", exposure, "\"", sep = ""), " and ", sep = ""),"\"",outcome,"\"",sep = "")
+    cat("See the covariate balance table ($Assumptions$exchangeability$covariate_balance) ")
     cat("in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). \n")
   }
 
