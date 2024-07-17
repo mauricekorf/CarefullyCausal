@@ -56,8 +56,8 @@ the second one in 1982. Suppose further that, in order to evaluate this
 causal relation, we assume that there are some important confounders we
 need to adjust for, which includes:  
 sex, race, age, education level, smoke intensity (number of cigarettes
-per day), how long someone has been smoking ( in years), start weight
-(in Kilograms), how much someone exercises (**0:** much exercise, **1:**
+per day), how long someone has been smoking (in years), start weight (in
+Kilograms), how much someone exercises (**0:** much exercise, **1:**
 moderate exercise, **2:** no exercise) and how active a person is on a
 usual day (**0:** very active, **1:** moderately active, **2:**
 inactive)
@@ -508,7 +508,7 @@ Age in 1971
 
 We will now shift our focus to actually using the CarefullyCausal
 function. The minimal call requires us to specify the following
-arguments: `formula, data, family` and `exposure`. Note that you can
+arguments: `formula, data, family`, and `exposure`. Note that you can
 always consult the help file within R to see the documentation of
 CarefullyCausal and to learn about all available arguments including an
 explanation. You can access this by simply typing in *CarefullyCausal*
@@ -555,14 +555,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.481   0.000     Inf        2.489
-#> qsmk1 T-standardization     3.448      0.507   0.000     Inf        2.458
+#> qsmk1 S-standardization     3.381      0.527   0.000     Inf        2.349
+#> qsmk1 T-standardization     3.448      0.529   0.000     Inf        2.366
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.374
-#> qsmk1 T-standardization         4.447
+#> qsmk1 S-standardization         4.415
+#> qsmk1 T-standardization         4.441
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -602,8 +602,8 @@ output
 <br>
 
 The output of the CarefullyCausal function is shown above and can be
-broadly classified into the sections: estimand, estimators and
-assumptions/diagnostics. We go over each part now in more detail.
+broadly classified into the sections: estimand, estimators, and
+assumptions & diagnostics. We go over each part now in more detail.
 
 ##### Estimand
 
@@ -624,23 +624,15 @@ interest and motivates the user to double-check the pre-analysis part of
 thinking through the research question and corresponding estimand. In
 addition, the estimand uses counterfactual notation and therewith
 emphasizes that we are interested in causal effects without ambiguity.
-We provide both a conditional and marginal estimand since we provide
-different estimators and different type of estimands correspond to
-different estimators. In essence, the idea of the estimand is the same
-but due to more technical reasons (how the estimators work) we write the
-estimand in a conditional or marginal way. Important to note is that the
-marginal estimand is still adjusting for all the variables like shown in
-the conditional estimand, but we do not write the adjusted variables
-explicitly in the marginal estimand. To learn more about estimands and
-its formulation see: [^3] [^4] [^5]
+Currently, `CarefullyCausal` only provides the average treatment effect
+and thus estimand depicted is marginal. We do list the adjustment set
+below the estimand. To learn more about estimands and its formulation
+see: [^3] [^4] [^5]
 
 ``` r
-#> Estimand: 
-#> Conditional 
-#> E[wt82_71^qsmk=1|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]  - E[wt82_71^qsmk=0|race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age]
-#> 
-#> Marginal 
+#> Estimand: Average Treatment Effect (Marginal)
 #> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
+#> Adjustment Set: race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age
 #> *Please see output at $Estimand_interpretation for details 
 ```
 
