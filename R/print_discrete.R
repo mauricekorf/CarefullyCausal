@@ -24,9 +24,31 @@ print.ccdisc <- function(h){
 
 
   cat("\nEstimand: Average Treatment Effect (Marginal) \n")
-  for (i in 1:length(exposure_lvls)){
-    cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
-  }
+
+  if(family=="binomial" & result_type=="rr"){
+
+    for (i in 1:length(exposure_lvls)){
+      cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
+                                      }
+    } else if (family=="binomial" & result_type=="log"){
+
+      for (i in 1:length(exposure_lvls)){
+        cat(cat(cat(cat(paste0("ln[ Odds(E[",outcome,"^",exposure,"=",exposure_lvls[i],"])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=",exposure_ref,"]) ]", "\n")))
+                                        }
+    } else if (family=="binomial" & result_type=="or"){
+
+      for (i in 1:length(exposure_lvls)){
+        cat(cat(cat(cat(paste0("Odds(E[",outcome,"^",exposure,"=",exposure_lvls[i],"])"))," /")," "),cat(paste0("Odds(E[",outcome,"^",exposure,"=",exposure_ref,"])", "\n")))
+                                        }
+    } else { #continuous outcome (originals scale of outcome, risk diff)
+
+      for (i in 1:length(exposure_lvls)){
+        cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
+                                        }
+
+   }
+
+
   if (covariates==""){
     cat(cat(cat("\nAdjustment Set:"), "None", sep = " "), "\n")
   } else {
