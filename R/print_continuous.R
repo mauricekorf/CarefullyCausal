@@ -16,19 +16,37 @@ print.cccont <- function(h){
   min_estimate = as.character(round(min(h[[2]][[1]])),4)
   max_estimate = as.character(round(max(h[[2]][[1]])),4)
 
-  if (covariates=="") {
-    cat("\nEstimand: \n")
+
+  cat("\nEstimand: Average Treatment Effect (Marginal) \n")
+
+  if(family=="binomial" & result_type=="rr"){
+
+    cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]", "\n")))
+
+  } else if (family=="binomial" & result_type=="log"){
+
+    cat(cat(cat(cat(paste0("ln[ Odds(E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]) ]", "\n")))
+
+  } else if (family=="binomial" & result_type=="or"){
+
+    cat(cat(cat(cat(paste0("Odds(E[",outcome,"^",exposure,"=a+1","]"))," /")," "),cat(paste0("E[",outcome,"^",exposure,"=a","])", "\n")))
+
+  } else { #continuous outcome (originals scale of outcome, risk diff)
+
     cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=a+1","]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]", "\n")))
-  }
-  else {
-    cat("\nEstimands: \n")
-    cat("Conditional \n")
-    cat(cat(cat(cat(cat(cat(cat(cat(cat(cat("E["),outcome, sep = ""),exposure,sep = "^"),"=a+1",sep = ""),"|",sep=""),covariates,sep = ""),"]",sep = ""),"-", sep = "  ")," "),cat(cat(cat(cat(cat(cat(cat("E["),outcome, sep = ""),exposure,sep = "^"),"=a",sep = ""),"|",sep=""),covariates,sep = ""),"]","\n",sep = ""))
-    cat("\nMarginal \n")
-    cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=a+1","]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=a","]", "\n")))
-    cat("*Please see output at $Estimand_interpretation for details \n \n")
+
 
   }
+
+
+  if (covariates==""){
+    cat(cat(cat("\nAdjustment Set:"), "None", sep = " "), "\n")
+  } else {
+    cat(cat(cat("\nAdjustment Set:"), covariates, sep = " "), "\n")
+  }
+  cat("*Please see output at $Estimand_interpretation for details \n \n")
+
+
   cat("\nTreatment effect: \n")
   h[[2]] <- format(round(output[[2]],3),nsmall=3) #to keep 000 as decimals
   print(h[[2]])
