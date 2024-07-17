@@ -23,8 +23,7 @@ print.ccdisc <- function(h){
   exposure_ref = levels(factor(object[,exposure]))[1]
 
 
-  cat("\nEstimand: \n")
-  cat("\nAverage Treatment Effect (Marginal) \n")
+  cat("\nEstimand: Average Treatment Effect (Marginal) \n")
   for (i in 1:length(exposure_lvls)){
     cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
   }
