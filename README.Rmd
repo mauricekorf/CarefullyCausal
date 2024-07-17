@@ -27,8 +27,8 @@ Some key features:\
 
 * **Setting**: Fixed-exposure
 * **Outcome of interest**: can be dichotomous or continuous
-* **Exposure of interest**: can be dichotomous, multi-value (max 4 levels) or continuous
-* **Effect measures**: can be in log(odds), risk ratio or odds ratio
+* **Exposure of interest**: can be dichotomous, multicategorical (max 4 levels), or continuous
+* **Effect measures**: can be in risk difference, log(odds), risk ratio, or odds ratio
 
 
 
