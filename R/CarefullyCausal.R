@@ -191,7 +191,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                    estimand_interpretation <- paste("The estimand shows the average causal effect in the population of interest given the different exposure regimes.",
                                                     "More specifically, it shows the effect when everybody would have received one more unit of",paste0(exposure," as compared to when everybody would have received the baseline,"),
                                                     "when adjusting for a set of covariates",paste0("(",covariates,")")," It should, however, be noted that only a few basic properties can be inferred from this estimand",
-                                                    "including: outcome of interest, exposure variable, contrast, and adjusted for variables. This means that many things cannot be inferred, such as definition of exposure",
+                                                    "including: outcome of interest, exposure variable, contrast, and adjusted for variables. This means that many things cannot be inferred, such as definition of exposure,",
                                                     "information on target population, duration, timing among many other aspects. This basic estimand should nonetheless match with the question of interest"),
                    assumptions <- list(exchangeability=list(explanation=exchangeability_expl,
                                                             covariate_balance=covariate_table(data = input_data,covariates = covariates,exposure = exposure),
@@ -315,7 +315,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                                       estimand[i-1] = paste(paste("exposure level",levels(factor(input_data[,exposure]))[i]),"with respect to when everybody would have received exposure level",levels(factor(input_data[,exposure]))[1],sep = " ")
                                                     },paste(estimand, collapse = " or ")),""),
                                                     "when adjusting for a set of covariates",paste0("(",covariates,")"), " It should, however, be noted that only a few basic properties can be inferred from this estimand",
-                                                    "including: outcome of interest, exposure variable, contrast, and adjusted for variables. This means that many things cannot be inferred, such as definition of exposure",
+                                                    "including: outcome of interest, exposure variable, contrast, and adjusted for variables. This means that many things cannot be inferred, such as definition of exposure,",
                                                     "information on target population, duration, timing among many other aspects. This basic estimand should nonetheless match with the question of interest"),
                    assumptions <- list(exchangeability=list(explanation=exchangeability_expl,
                                                             covariate_balance=covariate_table(data = input_data,covariates = covariates,exposure = exposure),
