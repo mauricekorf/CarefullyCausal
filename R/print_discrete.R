@@ -29,12 +29,14 @@ print.ccdisc <- function(h){
     cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
   }
   if (covariates==""){
-    cat(cat(cat("Adjustment Set:"), "None", sep = " "), "\n")
+    cat(cat(cat("\nAdjustment Set:"), "None", sep = " "), "\n")
   } else {
-    cat(cat(cat("Adjustment Set:"), covariates, sep = " "), "\n")
+    cat(cat(cat("\nAdjustment Set:"), covariates, sep = " "), "\n")
   }
 
   cat("*Please see output at $Estimand_interpretation for details \n \n")
+
+
 
   cat("\nTreatment effect: \n")
   h[[2]] <- format(round(output[[2]],3),nsmall=3) #to keep 000 as decimals
