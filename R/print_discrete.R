@@ -100,7 +100,7 @@ print.ccdisc <- function(h){
   } else {
     cat(cat(cat("\n[1] Conditional exchangeability requires that adjusting for "), "\"", covariates,"\"",sep = ""),"is sufficient to completely eliminate ")
     cat(cat(cat(cat("all confounding and selection bias between "),"\"", exposure, "\"", sep = ""), " and ", sep = ""),"\"",outcome,"\"",sep = "")
-    cat("See the covariate balance table ($Assumptions$exchangeability$covariate_balance) ")
+    cat(". See the covariate balance table ($Assumptions$exchangeability$covariate_balance) ")
     cat("in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). \n")
   }
 
