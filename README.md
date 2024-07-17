@@ -555,14 +555,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.471   0.000     Inf        2.466
-#> qsmk1 T-standardization     3.448      0.523   0.000     Inf        2.506
+#> qsmk1 S-standardization     3.381      0.540   0.000     Inf        2.330
+#> qsmk1 T-standardization     3.448      0.480   0.000     Inf        2.528
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.313
-#> qsmk1 T-standardization         4.558
+#> qsmk1 S-standardization         4.448
+#> qsmk1 T-standardization         4.410
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -663,27 +663,26 @@ output$Estimand_interpretation
 
 ##### Estimators
 
-After displaying the estimand, different estimators are shown in a table
-with corresponding estimates, standard errors, s-values and 95%
-confidence intervals. The p-values can also be shown by setting
-`pvalue=TRUE`, but is hidden by default. The S-value is a transformation
-of the p-value by applying $-log_2(p-value)$. The S-value is continuum
-and ranges from 0 to infinity, where a p-value of 1 corresponds to a
-S-value of 0 and a p-value of 0 corresponds to a S-value approaching
-infinity. Intuitively, the S-value captures the amount of information in
-the data against the model and quantifies how *suprised* we can be about
-a specific outome. In other words, a very high S-value implies that we
+After the estimand, different estimators are shown in a table with
+corresponding estimates, standard errors, p-values, s-values and 95%
+confidence intervals. Note that the S-value is a transformation of the
+p-value by applying $-log_2(p-value)$. The S-value is continuum and
+ranges from 0 to infinity, where a p-value of 1 corresponds to a S-value
+of 0 and a p-value of 0 corresponds to a S-value approaching infinity.
+Intuitively, the S-value captures the amount of information in the data
+against the model and quantifies how *suprised* we can be about a
+specific outome. In other words, a very high S-value implies that we
 would be suprised by the findings we found, given all background
-assumptions and test hypotheses. Showing the S-value by default rather
-than the p-value is motivated by that in practice a lot of studies
-dichotomize settings based on a single cut-off value (e.g $0.05$) where
-below that value it is interpreted as *useful* and above it is
-interpreted as *not useful*. In this way the focus is generally purely
-on the statistical significance and tends to result in
-underacknowledgment of the practical significance.[^6] [^7] [^8]
+assumptions and test hypotheses. Showing the S-value besides the p-value
+is motivated by that in practice a lot of studies dichotomize settings
+based on a single cut-off value (e.g $0.05$) where below that value it
+is interpreted as *useful* and above it is interpreted as *not useful*.
+In this way the focus is generally purely on the statistical
+significance and tends to result in underacknowledgment of the practical
+significance.[^6] [^7] [^8]
 
-CarefullyCausal currently supports five different estimators, as shown
-below, where key characteristics are listed below:
+`CarefullyCausal` currently supports five different estimators, as shown
+below, where key characteristics of each are listed:
 
 - *Outcome Regression*: for outcome regression `glm` is implemented.
   When `family = "gaussian"` linear regression is by default performed
@@ -768,12 +767,12 @@ below, where key characteristics are listed below:
 
 ``` r
 #> Treatment effect: 
-#>                       Estimate Std. Error S-value 95%.CI.lower 95%.CI.upper
-#> qsmk1 outcome regression    3.381      0.441  44.858        2.517        4.246
-#> qsmk1 IPTW                  3.318      0.494  35.198        2.351        4.286
-#> qsmk1 S-standardization     3.381      0.549     Inf        2.194        4.344
-#> qsmk1 T-standardization     3.448      0.523     Inf        2.479        4.528
-#> qsmk1 TMLE                  3.370      0.494     Inf        2.401        4.339
+#>                          Estimate Std. Error P-value S-value 95%.CI.lower 95%.CI.upper
+#> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517        4.246
+#> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351        4.286
+#> qsmk1 S-standardization     3.381      0.459   0.000     Inf        2.422        4.222
+#> qsmk1 T-standardization     3.448      0.501   0.000     Inf        2.517        4.481
+#> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401        4.339
 
 #> Reference exposure level: 0 
 
@@ -788,12 +787,12 @@ The reference exposure level is explicitly stated below the estimates
 table. In addition, the name of the respective exposure level of
 interest is added to the estimator’s name (in this example adding
 exposure level *“1”*) to avoid any confusion, especially in a
-multi-value exposure setting. In a multi-value exposure setting, all
-respective causal contrasts with respect to the specified reference
+multicategorical exposure setting. In a multicategorical exposure
+setting, all causal contrasts with respect to the specified reference
 exposure level are shown in the table per estimator. This means that
-when having four exposure levels, there are three contrasts shown per
-estimator. To change the reference exposure level you need *relevel* the
-exposure variable (which should be a factor). CarefullyCausal by
+when having four exposure levels, there will be three contrasts shown
+per estimator. To change the reference exposure level you need *relevel*
+the exposure variable (which should be a factor). `CarefullyCausal` by
 defaults selects the first level as reference level, which is the
 default behavior of R as well, where the reference level can be viewed
 using argument `level(exposure)`.
@@ -810,13 +809,13 @@ assumptions*) and this is considered to be practically important and not
 simply due to random error, then it should be investigated why. This
 raises questions such as whether particular modelling assumptions are
 violated, how these may be violated and if there is a possible solution.
-So, rather than thinking about selecting a *best* model, CarefullyCausal
-provides different estimates that correspond to different estimators to
-provide you with a broader context and might indicate that further
-inspection is necessary. Our advice is to report all estimates, but to
-discuss one of the estimates in more detail in terms of interpretation.
-In this way, a broader context is also provided to the reader and may
-facilitate an informed discussion.
+So, rather than thinking about selecting a *best* model,
+`CarefullyCausal` provides different estimates that correspond to
+different estimators to provide you with a broader context and might
+indicate that further inspection is necessary. Our advice is to report
+all estimates, but to discuss one of the estimates in more detail for
+interpretation. In this way, a broader context is provided to the reader
+and may facilitate an informed discussion.
 
 In this example we have a continuous outcome and thus the estimates are
 interpreted in the units of the outcome variable (weight change in Kg).
@@ -831,23 +830,24 @@ Key part of causal analyses is evaluating the underlying causal
 assumptions in order to form a judgement about to what extent the
 estimated effects can be interpreted as being causal. In this part it is
 crucial to think through why the assumptions seem plausible to hold as
-it helps you justify the causal interpretations. CarefullyCausal
+it helps you justify the causal interpretations. `CarefullyCausal`
 discusses five key underlying causal assumptions including:
 (conditional) exchangeability, consistency, positivity, having a
-well-specified model and having no measurement errors. In the printed
-output a brief description and bold statement is provided regarding what
-you are assuming. This should by no means scare you off, but should
+well-specified model, and having no measurement errors. In the printed
+output, a brief description and bold statement is provided regarding
+what you are assuming. This should by no means scare you off, but should
 motivate you to look into each assumption and to think about arguments
-why the assumption does indeed seem plausible to hold. We will now look
-into each assumption in more detail and show what useful diagnostics
-that are saved in the output may assist you.
+why the assumption might indeed seem plausible to hold. We will now look
+into each assumption in more detail and show what useful diagnostics,
+which are saved in the output, may assist you.
 
 ``` r
 #> To interpret these effects as causal, the following key assumptions must be satisfied: 
 #> 
-#> [1] Conditional exchangeability: implies that adjusting for "race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age" is enough to completely eliminate 
-#> all confounding and selection bias. See the covariate balance table ($Assumptions$exchangeability$covariate_balance) 
-#> in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
+#> [1] Conditional exchangeability requires that adjusting for "race, sex, education, smokeintensity, smokeyrs,
+#> wt71, exercise, active, age" is sufficient to completely eliminate all confounding and selection bias between 
+#> "qsmk" and "wt82_71". See the covariate balance table ($Assumptions$exchangeability$covariate_balance) in the 
+#> saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). 
 #> 
 #> [2] Positivity: is satisfied when both exposed and unexposed individuals are observed within every stratum of variables adjusted for ( race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age ). This can be evaluated using the propensity plots saved in the output at $Assumptions$positivity$plots (or identically use the ps.plot() function), the table below ($Assumptions$positivity$ps_table) and the corresponding explanation found at $Assumptions$positivity$explanation. Note: PS=propensity score 
 #>  
@@ -892,7 +892,7 @@ output$Assumptions$exchangeability$explanation
 #> selection bias? Next to this conditional setting, we can also have a setting when no covariates
 #> are adjusted for and we assume marginal exchangeability. Marginal exchangeability implies the
 #> absence of any confounding or selection bias when not adjusting for anything (unconditionally).
-#> This is obtained in an ideal randomized experiment design"
+#> This is for example obtained in an ideal randomized experiment design"
 ```
 
 <br>
@@ -900,7 +900,7 @@ output$Assumptions$exchangeability$explanation
 Besides the additional explanation/interpretation, we can obtain a
 covariate balance table and covariate balance plots from the saved
 *output* object. Both are generated using the `cobalt` package.[^15] For
-dichotomous and multi-value exposures, the difference in means are
+dichotomous and multicategorical exposures, the difference in means are
 reported. Here *“M.1.Un”* corresponds to the means in the treated group
 before adjusting, while *“M.0.Un* refers to the control group before
 adjusting. Similarly, *“M.1.Adj”* refers to the means in the treated
@@ -909,19 +909,19 @@ after adjusting and the same holds for the control group denoted by
 treated and control group before adjusting, while *“Diff.Adj* shows this
 respectively after adjusting. Note that this difference in means is
 standardized for continuous covariates but is not standardized (raw) for
-dichtomous covariates, which is the default setting from `cobalt`. Also,
-for dichotomous covariates the difference in means actually refers to
-the difference in proportions. When the exposure is continuous, we use
-correlation-based diagnostics. Specifically, the *treatment-covariate
-Pearson correlation* is shown and when the correlation is zero it
-implies that the treatment and covariate are independent. The
-treatment-covariate Pearson correlation is again displayed before and
-after adjusting, where after adjusting is referred to the GPS-weighted
-sample (*generalized propensity scores*). Ideally, the correlation
-between treatment and any covariate should approach 0 after adjusting as
-it implies independency.[^16] However, it should be noted that a
-*linear* correlation measure is used and thus it only measures *linear
-dependence* and does not capture non-linear relations.
+dichotomous covariates, which is the default setting from `cobalt`.
+Also, for dichotomous covariates the difference in means actually refers
+to the difference in proportions. When the exposure is continuous, we
+use correlation-based diagnostics. Specifically, the
+*treatment-covariate Pearson correlation* is shown and when the
+correlation is zero it implies that the exposure and a certain covariate
+are independent. The treatment-covariate Pearson correlation is again
+displayed before and after adjusting, where after adjusting is referred
+to the GPS-weighted sample (*generalized propensity scores*). Ideally,
+the correlation between exposure and any covariate should approach 0
+after adjusting as it implies independency.[^16] However, it should be
+noted that a *linear* correlation measure is used and thus it only
+measures *linear dependence* and does not capture non-linear relations.
 
 ``` r
 # We can obtain the covariate balance table from the saved output object named "output"
