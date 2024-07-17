@@ -189,10 +189,8 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                                  "assumptions seem plausible, the investigator also evaluated whether the different models yielded (very) different results and if so",
                                                  "it was further investigated as to why these differences appeared.")),
                    estimand_interpretation <- paste("The estimand shows the average causal effect in the population of interest given the different exposure regimes.",
-                                                    "More specifically, it shows the effect of receiving one more unit of",paste0(exposure,"."),
-                                                    "When adjusting for a set of covariates",paste0("(",covariates,")"), "the estimand is displayed in either a conditional or marginal way.",
-                                                    "Particularly, defining the estimand depends on the approach/model used. For example, outcome regression",
-                                                    "has a conditional estimand while IPTW has a marginal estimand."),
+                                                    "More specifically, it shows the effect when everybody would have received one more unit of",paste0(exposure," as compared to when everybody would have received the baseline,"),
+                                                    "when adjusting for a set of covariates",paste0("(",covariates,")")),
                    assumptions <- list(exchangeability=list(explanation=exchangeability_expl,
                                                             covariate_balance=covariate_table(data = input_data,covariates = covariates,exposure = exposure),
                                                             balance_plots=gps_plot_intern(object = glm_output,covariates = covariates,exposure = exposure)),
@@ -311,15 +309,10 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                                  "assumptions seem plausible, the investigator also evaluated whether the different models yielded (very) different results and if so",
                                                  "it was further investigated as to why these differences appeared.")),
                    estimand_interpretation <- paste("The estimand shows the average causal effect in the population of interest given the different exposure regimes.",
-                                                    "More specifically, the effect of receiving",paste0(paste0(for(i in 2:length(levels(factor(input_data[,exposure])))){
-                                                      estimand[i-1] = paste(paste("exposure level",levels(factor(input_data[,exposure]))[i]),"with respect to the reference exposure level",levels(factor(input_data[,exposure]))[1],sep = " ")
-                                                    },paste(estimand, collapse = " or ")),"."),
-                                                    "When adjusting for a set of covariates",paste0("(",covariates,")"),"the estimand is displayed in either a conditional or marginal way.",
-                                                    "Particularly, defining the estimand depends on the approach/model used. For example, outcome regression",
-                                                    "has a conditional estimand while IPTW has a marginal estimand. The T-standardization approach also has a marginal estimand",
-                                                    "while for the S-standardization it depends on whether interactions between treatment and covariates are taken into account.",
-                                                    "When no interactions are considered, then it is the same as outcome regression and thus has a conditional estimand, however",
-                                                    "when all interactions are considered then it is like T-standardization and thus has a marginal estimand."),
+                                                    "More specifically, the effect when everybody would have received",paste0(paste0(for(i in 2:length(levels(factor(input_data[,exposure])))){
+                                                      estimand[i-1] = paste(paste("exposure level",levels(factor(input_data[,exposure]))[i]),"with respect to when everybody would have received exposure level",levels(factor(input_data[,exposure]))[1],sep = " ")
+                                                    },paste(estimand, collapse = " or ")),""),
+                                                    "when adjusting for a set of covariates",paste0("(",covariates,")")),
                    assumptions <- list(exchangeability=list(explanation=exchangeability_expl,
                                                             covariate_balance=covariate_table(data = input_data,covariates = covariates,exposure = exposure),
                                                             balance_plots=covb_plot_intern(object = glm_output,covariates = covariates,exposure = exposure)),
