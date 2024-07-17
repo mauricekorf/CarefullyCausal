@@ -98,7 +98,7 @@ print.ccdisc <- function(h){
     cat("\n[1] Marginal exchangeability: implies that,unconditionally,no confounding nor selection bias is present \n")
     cat("this is for example obtained in an ideal randomized experiment design \n")
   } else {
-    cat(cat(cat("\n[1] Conditional exchangeability requires that adjusting for "), "\"", covariates,"\"",sep = ""),"is sufficient to completely eliminate \n")
+    cat(cat(cat("\n[1] Conditional exchangeability requires that adjusting for "), "\"", covariates,"\"",sep = ""),"is sufficient to completely eliminate ")
     cat(cat(cat(cat("all confounding and selection bias between "),"\"", exposure, "\"", sep = ""), " and ", sep = ""),"\"",outcome,"\"",sep = "")
     cat("See the covariate balance table ($Assumptions$exchangeability$covariate_balance) \n")
     cat("in the saved output and the corresponding explanations ($Assumptions$exchangeability$explanation). \n")
