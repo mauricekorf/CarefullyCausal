@@ -19,29 +19,23 @@ print.ccdisc <- function(h){
   max_estimate = as.character(format(round(max(h[[2]][[1]]),4),nsmall=4))
 
 
-  if (covariates=="") {
-    exposure_lvls = levels(factor(object[,exposure]))[-1]
-    exposure_ref = levels(factor(object[,exposure]))[1]
+  exposure_lvls = levels(factor(object[,exposure]))[-1]
+  exposure_ref = levels(factor(object[,exposure]))[1]
 
-    cat("\nEstimand: \n")
-    for (i in 1:length(exposure_lvls)){
-      cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
-    }
-  } else {
-    exposure_lvls = levels(factor(object[,exposure]))[-1]
-    exposure_ref = levels(factor(object[,exposure]))[1]
 
-    cat("\nEstimand: \n")
-    cat("Conditional \n")
-    for (i in 1:length(exposure_lvls)){
-      cat(cat(cat(cat(cat(cat(cat(cat(cat(cat("E["),outcome, sep = ""),exposure,sep = "^"),"=",exposure_lvls[i],sep = ""),"|",sep=""),covariates,sep = ""),"]",sep = ""),"-", sep = "  ")," "),cat(cat(cat(cat(cat(cat(cat("E["),outcome, sep = ""),exposure,sep = "^"),"=",exposure_ref,sep = ""),"|",sep=""),covariates,sep = ""),"]","\n",sep = ""))
-    }
-    cat("\nMarginal \n")
-    for (i in 1:length(exposure_lvls)){
-      cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
-    }
-    cat("*Please see output at $Estimand_interpretation for details \n \n")
+  cat("\nEstimand: \n")
+  cat("\nAverage Treatment Effect (Marginal) \n")
+  for (i in 1:length(exposure_lvls)){
+    cat(cat(cat(cat(paste0("E[",outcome,"^",exposure,"=",exposure_lvls[i],"]"))," -")," "),cat(paste0("E[",outcome,"^",exposure,"=",exposure_ref,"]", "\n")))
   }
+  if (covariates==""){
+    cat(cat(cat("Adjustment Set:"), "None", sep = " "), "\n")
+  } else {
+    cat(cat(cat("Adjustment Set:"), covariates, sep = " "), "\n")
+  }
+
+  cat("*Please see output at $Estimand_interpretation for details \n \n")
+
   cat("\nTreatment effect: \n")
   h[[2]] <- format(round(output[[2]],3),nsmall=3) #to keep 000 as decimals
   print(h[[2]])
