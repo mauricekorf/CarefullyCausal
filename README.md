@@ -1,5 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit rmd and knit as github document and commit changes -->
 
 # CarefullyCausal
 
@@ -7,15 +7,16 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of CarefullyCausal is to provide the user a practical guide
-when doing causal analyses. Particularly, CarefullyCausal provides the
-user the estimand, a table of causal estimates, a discussion on the
-causal assumptions, relevant diagnostics and
-interpretations/explanations. The key aspects of a causal analysis are
-printed and discussed in detail to help the user evaluate whether the
-estimated effects can be interpreted as being causal. Currently,
-CarefullyCausal can be used in a setting with a fixed-exposure, meaning
-that the exposure does not vary over time.  
+The goal of `CarefullyCausal` is to provide the user a practical guide
+to causal inference by guiding the user through important steps of a
+causal analysis. Particularly, `CarefullyCausal` provides the user the
+estimand, a table of effect estimates from different estimators, reports
+the causal assumptions with relevant diagnostics, and provides more
+detailed explanations and interpretations. Printing and discussing those
+key elements of a causal analysis helps the user with evaluating whether
+the estimated effects can be interpreted as being causal. Currently,
+`CarefullyCausal` can be used in a setting with a fixed-exposure,
+meaning that the exposure does not vary over time.  
 
 Some key features:  
 
@@ -25,13 +26,15 @@ Some key features:
   levels), or continuous
 - **Effect measures**: can be in risk difference, log(odds), risk ratio,
   or odds ratio
+- **Estimators**: Outcome regression, IPTW, S-and-T-Standardization,
+  TMLE
 
 ## Installation
 
-You can install the development version of CarefullyCausal as follows:
+You can install the development version of `CarefullyCausal` as follows:
 
 ``` r
-# To download R packages from Github or other sources we need the "devtools" package
+# To download R packages from Github we need the "devtools" package
 install.packages("devtools")
 library("devtools")
 
@@ -42,7 +45,7 @@ library(CarefullyCausal)
 
 ## Example
 
-To develop some intuition with the CarefullyCausal function and to
+To develop some intuition with the `CarefullyCausal` function and to
 highlight some important features, an example is step-by-step
 illustrated using the NHEFS[^1] data set.
 
@@ -506,14 +509,14 @@ Age in 1971
 
 ### Analysis (Applying CarefullyCausal)
 
-We will now shift our focus to actually using the CarefullyCausal
+We will now shift our focus to actually using the `CarefullyCausal`
 function. The minimal call requires us to specify the following
 arguments: `formula, data, family`, and `exposure`. Note that you can
 always consult the help file within R to see the documentation of
-CarefullyCausal and to learn about all available arguments including an
-explanation. You can access this by simply typing in *CarefullyCausal*
-in the help tab in R. Nonetheless, we summarise the key arguments we
-need for the minimal call.
+`CarefullyCausal` and to learn about all available arguments including
+an explanation. You can access this by simply typing in
+*CarefullyCausal* in the help tab in R. For the sake of completeness, we
+summarise the key arguments we need for the minimal call below.
 
 - `Formula`, this has the same form as for example when using *glm*
   which is $y\sim x + \boldsymbol{w}$. Here $y$ denotes the outcome of
@@ -555,14 +558,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.540   0.000     Inf        2.330
-#> qsmk1 T-standardization     3.448      0.480   0.000     Inf        2.528
+#> qsmk1 S-standardization     3.381      0.451   0.000     Inf        2.503
+#> qsmk1 T-standardization     3.448      0.485   0.000     Inf        2.489
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.448
-#> qsmk1 T-standardization         4.410
+#> qsmk1 S-standardization         4.272
+#> qsmk1 T-standardization         4.388
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -601,21 +604,21 @@ output
 
 <br>
 
-The output of the CarefullyCausal function is shown above and can be
+The output of the `CarefullyCausal` function is shown above and can be
 broadly classified into the sections: estimand, estimators, and
 assumptions & diagnostics. We go over each part now in more detail.
 
 ##### Estimand
 
-The first lines in the output show the *estimand*, which is a precise
+The first lines in the output report the *estimand*, which is a precise
 description of your research question and should be defined before the
 analyses. Defining the estimand requires the user to think through many
 aspects, such as the population in which the research question is being
 asked, the duration and timing of exposure, the definition of the
 exposure and so on. Printing the estimand in the R output might ideally
 be considered as redundant, post-analysis, as it can inform us only
-about basic characteristics. Particularly, the estimand targeted by the
-user which is printed in R can only inform us about the exposure
+about some basic characteristics. Particularly, the estimand targeted by
+the user which is printed in R can only inform us about the exposure
 variable, outcome variable, adjustment set and counterfactual contrast.
 Nonetheless, the idea of explicitly showing the estimand might serve as
 a reminder for the user to think through whether there is any
@@ -629,8 +632,8 @@ and thus the estimand depicted in the output is marginal. When the
 outcome of interest is continuous the estimand will be defined as a risk
 difference, however, when the outcome is dichotomous the estimand will
 be displayed as a risk ratio, odds ratio, or log odds ratio depending on
-the input arguments. Below the estimand, the adjustment set is shown. To
-learn more about estimands and its formulation see: [^3] [^4] [^5]
+the input arguments. Below the estimand, the adjustment set is reported.
+To learn more about estimands and its formulation see: [^3] [^4] [^5]
 
 ``` r
 #> Estimand: Average Treatment Effect (Marginal)
@@ -663,7 +666,7 @@ output$Estimand_interpretation
 
 ##### Estimators
 
-After the estimand, different estimators are shown in a table with
+Beneath the estimand, different estimators are shown in a table with
 corresponding estimates, standard errors, p-values, s-values and 95%
 confidence intervals. Note that the S-value is a transformation of the
 p-value by applying $-log_2(p-value)$. The S-value is continuum and
@@ -678,11 +681,11 @@ is motivated by that in practice a lot of studies dichotomize settings
 based on a single cut-off value (e.g $0.05$) where below that value it
 is interpreted as *useful* and above it is interpreted as *not useful*.
 In this way the focus is generally purely on the statistical
-significance and tends to result in underacknowledgment of the practical
+significance and tends to result in underacknowledgment of practical
 significance.[^6] [^7] [^8]
 
 `CarefullyCausal` currently supports five different estimators, as shown
-below, where key characteristics of each are listed:
+below, where key characteristics of each are briefly listed:
 
 - *Outcome Regression*: for outcome regression `glm` is implemented.
   When `family = "gaussian"` linear regression is by default performed
@@ -804,7 +807,7 @@ to see if they agree and may provide you with a broader context to the
 estimate. If all the estimates are very similar it does not guarantuee
 that the estimates are unbiased but at least it provides us with more
 information than when reporting a single estimate. However, if the
-estimates are very different (*depends on the data, domain and
+estimates are very different (*depends on the data, domain, and
 assumptions*) and this is considered to be practically important and not
 simply due to random error, then it should be investigated why. This
 raises questions such as whether particular modelling assumptions are
@@ -815,7 +818,7 @@ different estimators to provide you with a broader context and might
 indicate that further inspection is necessary. Our advice is to report
 all estimates, but to discuss one of the estimates in more detail for
 interpretation. In this way, a broader context is provided to the reader
-and may facilitate an informed discussion.
+and allows for an informed discussion.
 
 In this example we have a continuous outcome and thus the estimates are
 interpreted in the units of the outcome variable (weight change in Kg).
