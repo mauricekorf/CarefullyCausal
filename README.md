@@ -7,25 +7,25 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `CarefullyCausal` is to support the user a practical guide
-to causal inference by guiding the user through important steps of a
-causal analysis. Particularly, `CarefullyCausal` provides the user the
-estimand, a table of effect estimates from different estimators, reports
-the causal assumptions with relevant diagnostics, and provides more
-detailed explanations and interpretations. Printing and discussing those
-key elements of a causal analysis helps the user with evaluating whether
-the estimated effects can be interpreted as being causal. Currently,
-`CarefullyCausal` can be used in a setting with a fixed-exposure,
-meaning that the exposure does not vary over time.  
+The goal of `CarefullyCausal` is to support users with causal inference
+by providing relevant information and explanations to help interpret an
+estimated effect as causal. Specifically, `CarefullyCausal` provides the
+user the causal estimand, results from different estimators that rely on
+distinct modeling assumptions, reports the causal assumptions alongside
+relevant diagnostics, and provides more detailed explanations and
+interpretations in the saved output. In our opinion, we believe that
+directly reporting and discussing the key elements of a causal analysis
+in software output has the potential to elevate the quality of applied
+causal inference. We have therefore developed `CarefullyCausal`.
+Currently, `CarefullyCausal` can be used in the following settings:  
 
-Some key features:  
-
-- **Setting**: Fixed-exposure
+- **Estimand**: Average Treatment Effect
+- **Setting**: Fixed-exposure (i.e. not time-varying)
 - **Outcome of interest**: can be dichotomous or continuous
 - **Exposure of interest**: can be dichotomous, multicategorical (max 4
   levels), or continuous
-- **Effect measures**: can be in risk difference, log(odds), risk ratio,
-  or odds ratio
+- **Effect measures**: results can be reported on risk difference,
+  log(odds), risk ratio, or odds ratio scale
 - **Estimators**: Outcome regression, IPTW, S-and-T-Standardization,
   TMLE
 
@@ -67,7 +67,7 @@ inactive)
 
 <br> Given that we assume that these are the only confounders and that
 no collider bias or selection bias is induced, we would obtain the
-following simple Directed Acyclic Graph (DAG):
+following simple causal Directed Acyclic Graph (DAG):
 <p align="center">
 <img src="man/figures/README-RQ-1.png" width="60%" style="display: block; margin: auto;" />
 </p>
@@ -189,14 +189,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.447   0.000     Inf        2.489
-#> qsmk1 T-standardization     3.448      0.445   0.000     Inf        2.578
+#> qsmk1 S-standardization     3.381      0.448   0.000     Inf        2.484
+#> qsmk1 T-standardization     3.448      0.477   0.000     Inf        2.434
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.240
-#> qsmk1 T-standardization         4.324
+#> qsmk1 S-standardization         4.241
+#> qsmk1 T-standardization         4.305
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -239,32 +239,33 @@ The output of the `CarefullyCausal` function is shown above and can be
 broadly classified into the sections: estimand, estimators, and
 assumptions & diagnostics. We go over each part now in more detail.
 
-##### Estimand
+##### Causal Estimand
 
-The first lines in the output report the *estimand*, which is a precise
-description of your research question and should be defined before the
-analyses. Defining the estimand requires the user to think through many
-aspects, such as the population in which the research question is being
-asked, the duration and timing of exposure, the definition of the
-exposure and so on. Printing the estimand in the R output might ideally
-be considered as redundant, post-analysis, as it can inform us only
-about some basic characteristics. Particularly, the estimand targeted by
-the user which is printed in R can only inform us about the exposure
-variable, outcome variable, adjustment set and counterfactual contrast.
-Nonetheless, the idea of explicitly showing the estimand might serve as
-a reminder for the user to think through whether there is any
-discrepnancy between the actual estimated effect and the question of
-interest and motivates the user to double-check the pre-analysis part of
-thinking through the research question and corresponding estimand. In
-addition, the estimand uses counterfactual notation and therewith
-emphasizes that we are interested in causal effects without ambiguity.
-Currently, `CarefullyCausal` only provides the average treatment effect
-and thus the estimand depicted in the output is marginal. When the
-outcome of interest is continuous the estimand will be defined as a risk
-difference, however, when the outcome is dichotomous the estimand will
-be displayed as a risk ratio, odds ratio, or log odds ratio depending on
-the input arguments. Below the estimand, the adjustment set is reported.
-To learn more about estimands and its formulation see: [^3] [^4] [^5]
+The first lines in the output report the *causal estimand*, which is a
+precise description of your research question and should be defined
+before the analyses. Defining the estimand requires the user to think
+through many aspects, such as the population in which the research
+question is being asked, the duration and timing of exposure, the
+definition of the exposure and so on. Printing the estimand in the R
+output might ideally be considered as redundant, post-analysis, as it
+can inform us only about some basic characteristics. Particularly, the
+estimand targeted by the user which is printed in R can only inform us
+about the exposure variable, outcome variable, adjustment set and
+counterfactual contrast. Nonetheless, the idea of explicitly showing the
+estimand might serve as a reminder for the user to think through whether
+there is any discrepnancy between the actual estimated effect and the
+question of interest and motivates the user to double-check the
+pre-analysis part of thinking through the research question and
+corresponding estimand. In addition, the estimand uses counterfactual
+notation and therewith emphasizes that we are interested in causal
+effects without ambiguity. Currently, `CarefullyCausal` only provides
+the average treatment effect and thus the estimand depicted in the
+output is marginal. When the outcome of interest is continuous the
+estimand will be defined as a risk difference, however, when the outcome
+is dichotomous the estimand will be displayed as a risk ratio, odds
+ratio, or log odds ratio depending on the input arguments. Below the
+estimand, the adjustment set is reported. To learn more about estimands
+and its formulation see: [^3] [^4] [^5]
 
 ``` r
 #> Estimand: Average Treatment Effect (Marginal)
@@ -411,8 +412,8 @@ below, where key characteristics of each are briefly listed:
 #> Reference exposure level: 0 
 
 
-#> Please evaluate whether the difference beteen the lowest estimate: 3.3183 and highest: 3.4482 is of substance, 
-#> given the nature of the data. If so, evaluate the different modelling assumptions.
+#> Please evaluate whether the difference between the lowest estimate: 3.3183 and highest: 3.4482 is of substance, 
+#> given the nature of the data. If so, evaluate the different modelling assumptions underlying each estimator.
 ```
 
 <br>
@@ -465,15 +466,24 @@ assumptions in order to form a judgement about to what extent the
 estimated effects can be interpreted as being causal. In this part it is
 crucial to think through why the assumptions seem plausible to hold as
 it helps you justify the causal interpretations. `CarefullyCausal`
-discusses five key underlying causal assumptions including:
-(conditional) exchangeability, consistency, positivity, having a
-well-specified model, and having no measurement errors. In the printed
-output, a brief description and bold statement is provided regarding
-what you are assuming. This should by no means scare you off, but should
-motivate you to look into each assumption and to think about arguments
-why the assumption might indeed seem plausible to hold. We will now look
-into each assumption in more detail and show what useful diagnostics,
-which are saved in the output, may assist you.
+discusses six key underlying causal assumptions including: (conditional)
+exchangeability, consistency, no interference, positivity, having a
+well-specified model, and having no measurement errors. These causal
+assumptions (i.e. identifiability conditions) are relevant when
+conceptualising an observational study as a conditional randomized
+experiment or when the data originates from a trial. In other words, we
+do not consider other identification strategies, such as instrumental
+variables or quasi-experimental designs. Note that consistency and no
+interference assumptions are typically combined into one and referred to
+as the stable unit treatment value assumption (SUTVA). However, we have
+adopted epidemiological notation[^15].
+
+In the printed output, a brief description and bold statement is
+provided regarding what you are assuming. This should by no means scare
+you off, but should motivate you to look into each assumption and to
+think about arguments why the assumption might indeed seem plausible to
+hold. We will now look into each assumption in more detail and show what
+useful diagnostics, which are saved in the output, may assist you.
 
 ``` r
 #> To interpret these effects as causal, the following key assumptions must be satisfied: 
@@ -493,12 +503,12 @@ which are saved in the output, may assist you.
 #> the definition of the exposure would not result in a different outcome. See $Assumption$consistency 
 #> for a more in-depth explanation and examples. 
 #> 
-#> [4] No measurement error: assumes that all variables were measured without substantial error, such that
-#> no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, 
-#> then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error 
-#> for a further discussion 
+#> [4] No interference: assumes that the exposure 'qsmk' applied to one unit does not affect the outcome of other units.
 #> 
-#> [5] Well-specified models: assumes that any models used are well-specified meaning that they include all
+#> [5] No measurement error: assumes that all variables were measured without substantial error, such that
+#> no substantial measurement bias is present. See $Assumptions$no_measurement_error for a further discussion 
+#> 
+#> [6] Well-specified models: assumes that any models used are well-specified meaning that they include all
 #> relevant non-linearities and/or statistical interactions
 ```
 
@@ -533,7 +543,7 @@ output$Assumptions$exchangeability$explanation
 
 Besides the additional explanation/interpretation, we can obtain a
 covariate balance table and covariate balance plots from the saved
-*output* object. Both are generated using the `cobalt` package.[^15] For
+*output* object. Both are generated using the `cobalt` package.[^16] For
 dichotomous and multicategorical exposures, the difference in means are
 reported. Here *“M.1.Un”* corresponds to the means in the treated group
 before adjusting, while *“M.0.Un* refers to the control group before
@@ -553,7 +563,7 @@ are independent. The treatment-covariate Pearson correlation is again
 displayed before and after adjusting, where after adjusting is referred
 to the GPS-weighted sample (*generalized propensity scores*). Ideally,
 the correlation between exposure and any covariate should approach 0
-after adjusting as it implies independency.[^16] However, it should be
+after adjusting as it implies independency.[^17] However, it should be
 noted that a *linear* correlation measure is used and thus it only
 measures *linear dependence* and does not capture non-linear relations.
 
@@ -682,7 +692,7 @@ output$Assumptions$positivity$plots[[1]]
 
 <br>
 
-###### Consistency
+###### Consistency and No Interference
 
 For the consistency assumption we provide a more detailed explanation
 and example in the output object.
@@ -708,7 +718,7 @@ output$Assumptions$consistency
 
 <br>
 
-###### No measurement Error
+###### No Measurement Error
 
 For the no measurement error assumption we provide a brief statement in
 the saved output. Dealing with measurement errors is a field of research
@@ -727,7 +737,7 @@ output$Assumptions$no_measurement_error
 
 <br>
 
-###### Well-specified model
+###### Well-specified Model
 
 Just as with the *no measurement error* assumption, we provide for the
 *having a well-specified model* assumption also a brief statement in the
@@ -851,10 +861,14 @@ output$Interpretation
     targeted maximum likelihood estimation. Journal of Statistical
     Software, 51, 1-35.
 
-[^15]: Greifer N (2023). *cobalt: Covariate Balance Tables and Plots*. R
+[^15]: Hernán MA, Robins JM (2020). Causal Inference: What If. Boca
+    Raton: Chapman &
+    Hall/CRC,<https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/>
+
+[^16]: Greifer N (2023). *cobalt: Covariate Balance Tables and Plots*. R
     package version 4.5.1, <https://CRAN.R-project.org/package=cobalt>.
 
-[^16]: Austin, P. C. (2019). Assessing covariate balance when using the
+[^17]: Austin, P. C. (2019). Assessing covariate balance when using the
     generalized propensity score with quantitative or continuous
     exposures. Statistical methods in medical research, 28(5),
     1365-1377.
