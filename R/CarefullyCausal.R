@@ -149,7 +149,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                       "it can occur in the exposure, outcome or confounders.")
     well_specified_model_expl = paste("It is assumed that all models are well-specified, such that the respective model includes all",
                                       "relevant non-linearities and/or statistical interactions. Hence, it should be evaluated whether including for example squared terms or",
-                                      "other transformations are necessary.")
+                                      "other transformations are necessary, and ensure that the correct link function is used.")
 
 
     summary_result <- summaryglm.cc(object)
@@ -255,7 +255,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                       "it can occur in the exposure, outcome or confounders.")
     well_specified_model_expl = paste("It is assumed that all models are well-specified, such that the respective model includes all",
                                       "relevant non-linearities and/or statistical interactions. Hence, it should be evaluated whether including for example squared terms or",
-                                      "other transformations are necessary.")
+                                      "other transformations are necessary, and ensure that the correct link function is used.")
 
 
     #These variables are created for the "interpretation" section
