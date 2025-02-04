@@ -92,12 +92,12 @@ print.cccont <- function(h){
   cat("the definition of the exposure would not result in a different outcome. See $Assumption$consistency \n")
   cat("for a more in-depth explanation and examples. \n")
 
-  cat("\n[4] No measurement error: assumes that all variables were measured without substantial error, such that\n")
-  cat("no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, \n")
-  cat("then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error")
-  cat("for a further discussion \n")
+  cat(cat(cat("\n[4] No interference: assumes that the exposure"),paste0("'",exposure,"'")), "applied to one unit does not affect the outcome of other units.\n")
 
-  cat("\n[5] Well-specified models: assumes that any models used are well-specified meaning that they include all\n")
+  cat("\n[5] No measurement error: assumes that all variables were measured without substantial error, such that\n")
+  cat("no substantial measurement bias is present. See $Assumptions$no_measurement_error for further explanation \n")
+
+  cat("\n[6] Well-specified models: assumes that any models used are well-specified, meaning that they include all\n")
   cat("relevant non-linearities and/or statistical interactions\n")
 
 }
