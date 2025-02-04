@@ -7,7 +7,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `CarefullyCausal` is to provide the user a practical guide
+The goal of `CarefullyCausal` is to support the user a practical guide
 to causal inference by guiding the user through important steps of a
 causal analysis. Particularly, `CarefullyCausal` provides the user the
 estimand, a table of effect estimates from different estimators, reports
@@ -105,404 +105,35 @@ get an idea of the data set.
 df = nhefs_complete[,c("wt82_71","qsmk","race","sex","education","smokeintensity", "smokeyrs","wt71","exercise","active", "age")]
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:right;">
-wt82_71
-</th>
-<th style="text-align:right;">
-qsmk
-</th>
-<th style="text-align:left;">
-race
-</th>
-<th style="text-align:left;">
-sex
-</th>
-<th style="text-align:left;">
-education
-</th>
-<th style="text-align:right;">
-smokeintensity
-</th>
-<th style="text-align:right;">
-smokeyrs
-</th>
-<th style="text-align:right;">
-wt71
-</th>
-<th style="text-align:left;">
-exercise
-</th>
-<th style="text-align:left;">
-active
-</th>
-<th style="text-align:right;">
-age
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
--10.093960
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-30
-</td>
-<td style="text-align:right;">
-29
-</td>
-<td style="text-align:right;">
-79.04
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:right;">
-42
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-2.604970
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-24
-</td>
-<td style="text-align:right;">
-58.63
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:right;">
-36
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-9.414486
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-26
-</td>
-<td style="text-align:right;">
-56.81
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:right;">
-56
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-4.990117
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-53
-</td>
-<td style="text-align:right;">
-59.42
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-68
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-4.989251
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-19
-</td>
-<td style="text-align:right;">
-87.09
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-40
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-4.419060
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-21
-</td>
-<td style="text-align:right;">
-99.00
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-43
-</td>
-</tr>
-</tbody>
-</table>
+|    wt82_71 | qsmk | race | sex | education | smokeintensity | smokeyrs |  wt71 | exercise | active | age |
+|-----------:|-----:|:-----|:----|:----------|---------------:|---------:|------:|:---------|:-------|----:|
+| -10.093960 |    0 | 1    | 0   | 1         |             30 |       29 | 79.04 | 2        | 0      |  42 |
+|   2.604970 |    0 | 0    | 0   | 2         |             20 |       24 | 58.63 | 0        | 0      |  36 |
+|   9.414486 |    0 | 1    | 1   | 2         |             20 |       26 | 56.81 | 2        | 0      |  56 |
+|   4.990117 |    0 | 1    | 0   | 1         |              3 |       53 | 59.42 | 2        | 1      |  68 |
+|   4.989251 |    0 | 0    | 0   | 2         |             20 |       19 | 87.09 | 1        | 1      |  40 |
+|   4.419060 |    0 | 1    | 1   | 2         |             10 |       21 | 99.00 | 1        | 1      |  43 |
 
 <br>
 
 To further inspect the variable coding and the corresponding definition,
 a table is created below which also includes the class of the variable.
 <center>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-variable
-</th>
-<th style="text-align:left;">
-class
-</th>
-<th style="text-align:left;">
-description
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-wt82_71
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-The weight change between 1971 and 1982 in Kg
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-qsmk
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-Quit smoking during 1971-1982, 1: yes, 0: no
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-race
-</td>
-<td style="text-align:left;">
-factor
-</td>
-<td style="text-align:left;">
-1: black or other, 0: white,
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sex
-</td>
-<td style="text-align:left;">
-factor
-</td>
-<td style="text-align:left;">
-1: female, 0: male
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education
-</td>
-<td style="text-align:left;">
-factor
-</td>
-<td style="text-align:left;">
-1: 8th grade, 2: HS dropout, 3: HS, 4: college dropout, 5: college or
-higher
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-smokeintensity
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-Number of cigarettes smoked per day in 1971
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-smokeyrs
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-Years of smoking
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-wt71
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-Start weight (Kg) in 1971
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-exercise
-</td>
-<td style="text-align:left;">
-factor
-</td>
-<td style="text-align:left;">
-In recreation in 1971 how mu h exercising, 0: much, 1: moderate, 2:
-little or none
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active
-</td>
-<td style="text-align:left;">
-factor
-</td>
-<td style="text-align:left;">
-On usual day how active in 1971, 0: very active, 1: moderately active,
-2: inactive
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-age
-</td>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-Age in 1971
-</td>
-</tr>
-</tbody>
-</table>
+
+| variable       | class   | description                                                                        |
+|:---------------|:--------|:-----------------------------------------------------------------------------------|
+| wt82_71        | numeric | The weight change between 1971 and 1982 in Kg                                      |
+| qsmk           | numeric | Quit smoking during 1971-1982, 1: yes, 0: no                                       |
+| race           | factor  | 1: black or other, 0: white,                                                       |
+| sex            | factor  | 1: female, 0: male                                                                 |
+| education      | factor  | 1: 8th grade, 2: HS dropout, 3: HS, 4: college dropout, 5: college or higher       |
+| smokeintensity | numeric | Number of cigarettes smoked per day in 1971                                        |
+| smokeyrs       | numeric | Years of smoking                                                                   |
+| wt71           | numeric | Start weight (Kg) in 1971                                                          |
+| exercise       | factor  | In recreation in 1971 how mu h exercising, 0: much, 1: moderate, 2: little or none |
+| active         | factor  | On usual day how active in 1971, 0: very active, 1: moderately active, 2: inactive |
+| age            | numeric | Age in 1971                                                                        |
+
 </center>
 
 <br>
@@ -558,21 +189,21 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.451   0.000     Inf        2.503
-#> qsmk1 T-standardization     3.448      0.485   0.000     Inf        2.489
+#> qsmk1 S-standardization     3.381      0.447   0.000     Inf        2.489
+#> qsmk1 T-standardization     3.448      0.445   0.000     Inf        2.578
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.272
-#> qsmk1 T-standardization         4.388
+#> qsmk1 S-standardization         4.240
+#> qsmk1 T-standardization         4.324
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
 #> 
 #> 
 #> Please evaluate whether the difference beteen the lowest estimate: 3.3183 and highest: 3.4482 is of substance, 
-#> given the nature of the data. If so, evaluate the different modelling assumptions.
+#> given the nature of the data. If so, evaluate the different modeling assumptions underlying each estimator.
 #> 
 #> 
 #> To interpret these effects as causal, the following key assumptions must be satisfied: 
@@ -593,12 +224,12 @@ output
 #> the definition of the exposure would not result in a different outcome. See $Assumption$consistency 
 #> for a more in-depth explanation and examples. 
 #> 
-#> [4] No measurement error: assumes that all variables were measured without substantial error, such that
-#> no substantial measurement bias is present. However, if the presence of substantial measurement bias is plausible, 
-#> then the estimated effects should be carefully reconsidered as being causal effects. See $Assumptions$no_measurement_error 
-#> for a further discussion 
+#> [4] No interference: assumes that the exposure 'qsmk' applied to one unit does not affect the outcome of other units.
 #> 
-#> [5] Well-specified models: assumes that any models used are well-specified meaning that they include all
+#> [5] No measurement error: assumes that all variables were measured without substantial error, such that
+#> no substantial measurement bias is present. See $Assumptions$no_measurement_error for further explanation 
+#> 
+#> [6] Well-specified models: assumes that any models used are well-specified, meaning that they include all
 #> relevant non-linearities and/or statistical interactions
 ```
 
@@ -931,549 +562,35 @@ measures *linear dependence* and does not capture non-linear relations.
 output$Assumptions$exchangeability$covariate_balance
 ```
 
-<table>
-<caption>
+|                | Type     |     M.0.Un |     M.1.Un |    Diff.Un |    M.0.Adj |    M.1.Adj |   Diff.Adj |
+|:---------------|:---------|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|
+| prop.score     | Distance |  0.2417253 |  0.3021265 |  0.5368600 |  0.2591321 |  0.2567410 | -0.0212524 |
+| race           | Binary   |  0.1461737 |  0.0893300 | -0.0568437 |  0.1311683 |  0.1311622 | -0.0000060 |
+| sex            | Binary   |  0.5339639 |  0.4540943 | -0.0798696 |  0.5113079 |  0.5113118 |  0.0000039 |
+| education_1    | Binary   |  0.1805675 |  0.2009926 |  0.0204251 |  0.1813769 |  0.1813580 | -0.0000190 |
+| education_2    | Binary   |  0.2287188 |  0.1836228 | -0.0450960 |  0.2179699 |  0.2179589 | -0.0000111 |
+| education_3    | Binary   |  0.4127257 |  0.3895782 | -0.0231475 |  0.4041580 |  0.4041876 |  0.0000296 |
+| education_4    | Binary   |  0.0791058 |  0.0719603 | -0.0071455 |  0.0804544 |  0.0804462 | -0.0000082 |
+| education_5    | Binary   |  0.0988822 |  0.1538462 |  0.0549640 |  0.1160408 |  0.1160494 |  0.0000086 |
+| smokeintensity | Contin.  | 21.1917455 | 18.6029777 | -0.2166746 | 20.5519894 | 20.5504753 | -0.0001267 |
+| smokeyrs       | Contin.  | 24.0877042 | 26.0322581 |  0.1589181 | 24.7241755 | 24.7246024 |  0.0000349 |
+| wt71           | Contin.  | 70.3028375 | 72.3548883 |  0.1332162 | 70.7447292 | 70.7457996 |  0.0000695 |
+| exercise_0     | Binary   |  0.2037833 |  0.1563275 | -0.0474558 |  0.1895426 |  0.1895168 | -0.0000259 |
+| exercise_1     | Binary   |  0.4170249 |  0.4367246 |  0.0196996 |  0.4303267 |  0.4303411 |  0.0000144 |
+| exercise_2     | Binary   |  0.3791917 |  0.4069479 |  0.0277561 |  0.3801306 |  0.3801421 |  0.0000114 |
+| active_0       | Binary   |  0.4574377 |  0.4218362 | -0.0356014 |  0.4435776 |  0.4435609 | -0.0000167 |
+| active_1       | Binary   |  0.4531384 |  0.4665012 |  0.0133628 |  0.4646755 |  0.4646865 |  0.0000110 |
+| active_2       | Binary   |  0.0894239 |  0.1116625 |  0.0222386 |  0.0917469 |  0.0917527 |  0.0000057 |
+| age            | Contin.  | 42.7884781 | 46.1736973 |  0.2819809 | 43.8193798 | 43.8200773 |  0.0000581 |
+
 Balance Measures
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-Type
-</th>
-<th style="text-align:right;">
-M.0.Un
-</th>
-<th style="text-align:right;">
-M.1.Un
-</th>
-<th style="text-align:right;">
-Diff.Un
-</th>
-<th style="text-align:right;">
-M.0.Adj
-</th>
-<th style="text-align:right;">
-M.1.Adj
-</th>
-<th style="text-align:right;">
-Diff.Adj
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-prop.score
-</td>
-<td style="text-align:left;">
-Distance
-</td>
-<td style="text-align:right;">
-0.2417253
-</td>
-<td style="text-align:right;">
-0.3021265
-</td>
-<td style="text-align:right;">
-0.5368600
-</td>
-<td style="text-align:right;">
-0.2591321
-</td>
-<td style="text-align:right;">
-0.2567410
-</td>
-<td style="text-align:right;">
--0.0212524
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-race
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.1461737
-</td>
-<td style="text-align:right;">
-0.0893300
-</td>
-<td style="text-align:right;">
--0.0568437
-</td>
-<td style="text-align:right;">
-0.1311683
-</td>
-<td style="text-align:right;">
-0.1311622
-</td>
-<td style="text-align:right;">
--0.0000060
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-sex
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.5339639
-</td>
-<td style="text-align:right;">
-0.4540943
-</td>
-<td style="text-align:right;">
--0.0798696
-</td>
-<td style="text-align:right;">
-0.5113079
-</td>
-<td style="text-align:right;">
-0.5113118
-</td>
-<td style="text-align:right;">
-0.0000039
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education_1
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.1805675
-</td>
-<td style="text-align:right;">
-0.2009926
-</td>
-<td style="text-align:right;">
-0.0204251
-</td>
-<td style="text-align:right;">
-0.1813769
-</td>
-<td style="text-align:right;">
-0.1813580
-</td>
-<td style="text-align:right;">
--0.0000190
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education_2
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.2287188
-</td>
-<td style="text-align:right;">
-0.1836228
-</td>
-<td style="text-align:right;">
--0.0450960
-</td>
-<td style="text-align:right;">
-0.2179699
-</td>
-<td style="text-align:right;">
-0.2179589
-</td>
-<td style="text-align:right;">
--0.0000111
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education_3
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.4127257
-</td>
-<td style="text-align:right;">
-0.3895782
-</td>
-<td style="text-align:right;">
--0.0231475
-</td>
-<td style="text-align:right;">
-0.4041580
-</td>
-<td style="text-align:right;">
-0.4041876
-</td>
-<td style="text-align:right;">
-0.0000296
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education_4
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.0791058
-</td>
-<td style="text-align:right;">
-0.0719603
-</td>
-<td style="text-align:right;">
--0.0071455
-</td>
-<td style="text-align:right;">
-0.0804544
-</td>
-<td style="text-align:right;">
-0.0804462
-</td>
-<td style="text-align:right;">
--0.0000082
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-education_5
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.0988822
-</td>
-<td style="text-align:right;">
-0.1538462
-</td>
-<td style="text-align:right;">
-0.0549640
-</td>
-<td style="text-align:right;">
-0.1160408
-</td>
-<td style="text-align:right;">
-0.1160494
-</td>
-<td style="text-align:right;">
-0.0000086
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-smokeintensity
-</td>
-<td style="text-align:left;">
-Contin.
-</td>
-<td style="text-align:right;">
-21.1917455
-</td>
-<td style="text-align:right;">
-18.6029777
-</td>
-<td style="text-align:right;">
--0.2166746
-</td>
-<td style="text-align:right;">
-20.5519894
-</td>
-<td style="text-align:right;">
-20.5504753
-</td>
-<td style="text-align:right;">
--0.0001267
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-smokeyrs
-</td>
-<td style="text-align:left;">
-Contin.
-</td>
-<td style="text-align:right;">
-24.0877042
-</td>
-<td style="text-align:right;">
-26.0322581
-</td>
-<td style="text-align:right;">
-0.1589181
-</td>
-<td style="text-align:right;">
-24.7241755
-</td>
-<td style="text-align:right;">
-24.7246024
-</td>
-<td style="text-align:right;">
-0.0000349
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-wt71
-</td>
-<td style="text-align:left;">
-Contin.
-</td>
-<td style="text-align:right;">
-70.3028375
-</td>
-<td style="text-align:right;">
-72.3548883
-</td>
-<td style="text-align:right;">
-0.1332162
-</td>
-<td style="text-align:right;">
-70.7447292
-</td>
-<td style="text-align:right;">
-70.7457996
-</td>
-<td style="text-align:right;">
-0.0000695
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-exercise_0
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.2037833
-</td>
-<td style="text-align:right;">
-0.1563275
-</td>
-<td style="text-align:right;">
--0.0474558
-</td>
-<td style="text-align:right;">
-0.1895426
-</td>
-<td style="text-align:right;">
-0.1895168
-</td>
-<td style="text-align:right;">
--0.0000259
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-exercise_1
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.4170249
-</td>
-<td style="text-align:right;">
-0.4367246
-</td>
-<td style="text-align:right;">
-0.0196996
-</td>
-<td style="text-align:right;">
-0.4303267
-</td>
-<td style="text-align:right;">
-0.4303411
-</td>
-<td style="text-align:right;">
-0.0000144
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-exercise_2
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.3791917
-</td>
-<td style="text-align:right;">
-0.4069479
-</td>
-<td style="text-align:right;">
-0.0277561
-</td>
-<td style="text-align:right;">
-0.3801306
-</td>
-<td style="text-align:right;">
-0.3801421
-</td>
-<td style="text-align:right;">
-0.0000114
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active_0
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.4574377
-</td>
-<td style="text-align:right;">
-0.4218362
-</td>
-<td style="text-align:right;">
--0.0356014
-</td>
-<td style="text-align:right;">
-0.4435776
-</td>
-<td style="text-align:right;">
-0.4435609
-</td>
-<td style="text-align:right;">
--0.0000167
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active_1
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.4531384
-</td>
-<td style="text-align:right;">
-0.4665012
-</td>
-<td style="text-align:right;">
-0.0133628
-</td>
-<td style="text-align:right;">
-0.4646755
-</td>
-<td style="text-align:right;">
-0.4646865
-</td>
-<td style="text-align:right;">
-0.0000110
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-active_2
-</td>
-<td style="text-align:left;">
-Binary
-</td>
-<td style="text-align:right;">
-0.0894239
-</td>
-<td style="text-align:right;">
-0.1116625
-</td>
-<td style="text-align:right;">
-0.0222386
-</td>
-<td style="text-align:right;">
-0.0917469
-</td>
-<td style="text-align:right;">
-0.0917527
-</td>
-<td style="text-align:right;">
-0.0000057
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-age
-</td>
-<td style="text-align:left;">
-Contin.
-</td>
-<td style="text-align:right;">
-42.7884781
-</td>
-<td style="text-align:right;">
-46.1736973
-</td>
-<td style="text-align:right;">
-0.2819809
-</td>
-<td style="text-align:right;">
-43.8193798
-</td>
-<td style="text-align:right;">
-43.8200773
-</td>
-<td style="text-align:right;">
-0.0000581
-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<caption>
+
+|            |  Control |  Treated |
+|:-----------|---------:|---------:|
+| Unadjusted | 1163.000 | 403.0000 |
+| Adjusted   | 1130.375 | 334.9103 |
+
 Effective Sample Size
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-Control
-</th>
-<th style="text-align:right;">
-Treated
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Unadjusted
-</td>
-<td style="text-align:right;">
-1163.000
-</td>
-<td style="text-align:right;">
-403.0000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Adjusted
-</td>
-<td style="text-align:right;">
-1130.375
-</td>
-<td style="text-align:right;">
-334.9103
-</td>
-</tr>
-</tbody>
-</table>
 
 <br>
 
@@ -1550,35 +667,10 @@ output$Assumptions$positivity$plots[[1]]
 
 <div align="center">
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-PS range for 1
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-observed exposure: 0
-</td>
-<td style="text-align:left;">
-0.0338, 0.6520
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-observed exposure: 1
-</td>
-<td style="text-align:left;">
-0.0685, 0.7709
-</td>
-</tr>
-</tbody>
-</table>
+|                      | PS range for 1 |
+|:---------------------|:---------------|
+| observed exposure: 0 | 0.0338, 0.6520 |
+| observed exposure: 1 | 0.0685, 0.7709 |
 
 </div>
 
