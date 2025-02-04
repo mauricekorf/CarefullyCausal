@@ -87,7 +87,7 @@ print.ccdisc <- function(h){
   cat("\n")
 
   cat(cat(cat(cat("\nPlease evaluate whether the difference beteen the lowest estimate:"),min_estimate, sep = " "),"and highest:"),max_estimate,"is of substance, \n")
-  cat("given the nature of the data. If so, evaluate the different modelling assumptions.")
+  cat("given the nature of the data. If so, evaluate the different modeling assumptions underlying each estimator.")
   cat("\n")
   cat("\n")
 
