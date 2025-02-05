@@ -17,7 +17,11 @@ print.cccont <- function(h){
   max_estimate = as.character(round(max(h[[2]][[1]])),4)
 
 
-  cat("\nEstimand: Average Treatment Effect (Marginal) \n")
+  if(family=="binomial"){
+    cat("\nEstimand: (Conditional) Average Treatment Effect \n")
+  } else{
+    cat("\nEstimand: Average Treatment Effect \n")
+  }
 
   if(family=="binomial" & result_type=="rr"){ # RR estimand
 

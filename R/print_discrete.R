@@ -22,8 +22,12 @@ print.ccdisc <- function(h){
   exposure_lvls = levels(factor(object[,exposure]))[-1]
   exposure_ref = levels(factor(object[,exposure]))[1]
 
+  if(family=="binomial"){
+    cat("\nEstimand: (Conditional) Average Treatment Effect \n")
+  } else{
+    cat("\nEstimand: Average Treatment Effect \n")
+  }
 
-  cat("\nEstimand: Average Treatment Effect (Marginal) \n")
 
   if(family=="binomial" & result_type=="rr"){
 
