@@ -20,12 +20,12 @@ causal inference. We have therefore developed `CarefullyCausal`.
 Currently, `CarefullyCausal` can be used in the following settings:  
 
 - **Estimand**: Average Treatment Effect\*
+- **Effect measures**: estimand and results can be reported on risk
+  difference, log(odds), risk ratio, or odds ratio scale
 - **Setting**: Fixed-exposure (i.e. not time-varying)
 - **Outcome of interest**: can be dichotomous or continuous
 - **Exposure of interest**: can be dichotomous, multicategorical (max 4
   levels), or continuous
-- **Effect measures**: results can be reported on risk difference,
-  log(odds), risk ratio, or odds ratio scale
 - **Estimators**: Outcome regression, IPTW, S-and-T-Standardization,
   TMLE
 
@@ -191,14 +191,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.470   0.000     Inf        2.493
-#> qsmk1 T-standardization     3.448      0.489   0.000     Inf        2.527
+#> qsmk1 S-standardization     3.381      0.530   0.000     Inf        2.392
+#> qsmk1 T-standardization     3.448      0.488   0.000     Inf        2.454
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.335
-#> qsmk1 T-standardization         4.442
+#> qsmk1 S-standardization         4.469
+#> qsmk1 T-standardization         4.368
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
@@ -259,18 +259,17 @@ there is any discrepnancy between the actual estimated effect and the
 question of interest and motivates the user to double-check the
 pre-analysis part of thinking through the research question and
 corresponding estimand. In addition, the estimand uses counterfactual
-notation and therewith emphasizes that we are interested in causal
-effects without ambiguity. Currently, `CarefullyCausal` only provides
-the average treatment effect and thus the estimand depicted in the
-output is marginal. When the outcome of interest is continuous the
-estimand will be defined as a risk difference, however, when the outcome
-is dichotomous the estimand will be displayed as a risk ratio, odds
-ratio, or log odds ratio depending on the input arguments. Below the
-estimand, the adjustment set is reported. To learn more about estimands
-and its formulation see: [^3] [^4] [^5]
+notation and therewith emphasizes that we are interested in causal a
+effect without ambiguity. Currently, `CarefullyCausal` provides the
+average treatment effect on either the risk difference, risk ratio,
+log(odds), or odds ratio scale, which is specified using the argument
+`result_type`. Note, however, that the outcome regression estimator when
+using `family=binomial` denotes the conditional average treatment
+effect. Below the estimand, the adjustment set is reported. To learn
+more about estimands and its formulation see: [^3] [^4] [^5]
 
 ``` r
-#> Estimand: Average Treatment Effect (Marginal)
+#> Estimand: Average Treatment Effect
 #> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
 #> 
 #> Adjustment Set: race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age
@@ -287,9 +286,10 @@ this example the `CarefullyCausal` output was saved in the object named
 # Show saved output from $Estimand_interpretation
 output$Estimand_interpretation
 
-#> [1] "The estimand shows the average causal effect in the population of interest given the different exposure
-#> regimes. More specifically, the effect when everybody would have received exposure level 1 with respect to when #> everybody would have received exposure level 0 when adjusting for a set of covariates (race, sex, education, 
-#> smokeintensity, smokeyrs, wt71, exercise, active, age)  It should, however, be noted that only a few basic 
+#> [1] "The estimand shows the (conditional) average causal effect in the population of interest given the different exposure
+#> regimes. Importantly, when family is binomial the outcome regression model should be interpreted as the #> conditional ATE where the effect is conditional on the covariates within the adjustment set.
+#>  For the other estimators, it shows the effect when everybody would have received exposure level 1 with respect to when everybody would have received exposure level 0 when adjusting for a set of covariates (race, sex, education, 
+#> smokeintensity, smokeyrs, wt71, exercise, active, age).  It should, however, be noted that only a few basic 
 #> properties can be inferred from this estimand including: outcome of interest, exposure variable, contrast, and 
 #> adjusted for variables. This means that many things cannot be inferred, such as definition of exposure,
 #> information on target population, duration, timing among many other aspects. This basic estimand should 
