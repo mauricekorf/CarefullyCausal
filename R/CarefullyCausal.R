@@ -170,7 +170,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                    interpretation <- paste("This study evaluated the effect of",exposure,"on",paste0(outcome,","),
                                            "while adjusting for covariates:",  if (covariates!=""){paste0(covariates,".")}else{"No covariates were controlled for."},
                                            "The exposure is continuous and thus the effects should be interpreted in terms of a 1 unit increase in the exposure.",
-                                           "When deploying outcome regression the average treatment effec (ATE) is estimated to be:",paste0(paste(round(summary_result2$Estimate[[1]]),3),"."),
+                                           "When deploying outcome regression the (conditional) average treatment effect is estimated to be:",paste0(paste(round(summary_result2$Estimate[[1]]),3),"."),
                                            "When using IPTW the respective estimated ATE is:",paste0(paste(round(summary_result2$Estimate[[2]]),3),"."),
                                            if (family=="binomial" & result_type=="log"){ paste("It should be noted that the effects are in terms of log-odds.")}
                                            else if (family=="binomial" & result_type=="or"){paste("It should be noted that the effects are in terms of odds ratio.")}
@@ -188,8 +188,10 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                                  "well-specified, such that all relevant non-linearities and/or statistical interactions are taken into account. Given that these above mentioned",
                                                  "assumptions seem plausible, the investigator also evaluated whether the different models yielded (very) different results and if so",
                                                  "it was further investigated as to why these differences appeared.")),
-                   estimand_interpretation <- paste("The estimand shows the average causal effect in the population of interest given the different exposure regimes.",
-                                                    "More specifically, it shows the effect when everybody would have received one more unit of",paste0(exposure," as compared to when everybody would have received the baseline,"),
+                   estimand_interpretation <- paste("The estimand shows the (conditional) average causal effect in the population of interest given the different exposure regimes.",
+                                                    "Importantly, when family is binomial the outcome regression model should be interpreted as the conditional ATE where",
+                                                    "the effect is conditional on the covariates within the adjustment set",
+                                                    "For the other estimators, it shows the effect when everybody would have received one more unit of",paste0(exposure," as compared to when everybody would have received the baseline,"),
                                                     "when adjusting for a set of covariates",paste0("(",covariates,")")," It should, however, be noted that only a few basic properties can be inferred from this estimand",
                                                     "including: outcome of interest, exposure variable, contrast, and adjusted for variables. This means that many things cannot be inferred, such as definition of exposure,",
                                                     "information on target population, duration, timing among many other aspects. This basic estimand should nonetheless match with the question of interest"),
@@ -288,7 +290,7 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                            "Effects were estimated using reference level: ",paste0(lvls[1],","), "implying all effect estimates (contrasts)",
                                            "should be interpreted with respect to this exposure level.",
                                            "Specifically, the contrasts considered are: ",paste(lvls[-1],collapse =","),"with respect to",paste0(lvls[1],"."),
-                                           "When deploying outcome regression the average treatment effect (ATE) is, respectively, estimated to be:",paste0(paste(estimates_int[[1]],collapse = ","),"."),
+                                           "When deploying outcome regression the (conditional) average treatment effect is, respectively, estimated to be:",paste0(paste(estimates_int[[1]],collapse = ","),"."),
                                            "When using IPTW the respective estimated ATE are:",paste0(paste(estimates_int[[2]],collapse = ","),"."),
                                            if(standardization==TRUE){
                                              paste("Moreover, S-standardization respectively estimated:", paste(estimates_int[[3]],collapse = ","),
@@ -310,8 +312,10 @@ CarefullyCausal <- function(formula,data,family="gaussian", exposure, pvalue=TRU
                                                  "well-specified, such that all relevant non-linearities and/or statistical interactions are taken into account. Given that these above mentioned",
                                                  "assumptions seem plausible, the investigator also evaluated whether the different models yielded (very) different results and if so",
                                                  "it was further investigated as to why these differences appeared.")),
-                   estimand_interpretation <- paste("The estimand shows the average causal effect in the population of interest given the different exposure regimes.",
-                                                    "More specifically, the effect when everybody would have received",paste0(paste0(for(i in 2:length(levels(factor(input_data[,exposure])))){
+                   estimand_interpretation <- paste("The estimand shows the (conditional) average causal effect in the population of interest given the different exposure regimes.",
+                                                    "Importantly, when family is binomial the outcome regression model should be interpreted as the conditional ATE where",
+                                                    "the effect is conditional on the covariates within the adjustment set",
+                                                    "For the other estimators, it shows the effect when everybody would have received",paste0(paste0(for(i in 2:length(levels(factor(input_data[,exposure])))){
                                                       estimand[i-1] = paste(paste("exposure level",levels(factor(input_data[,exposure]))[i]),"with respect to when everybody would have received exposure level",levels(factor(input_data[,exposure]))[1],sep = " ")
                                                     },paste(estimand, collapse = " or ")),""),
                                                     "when adjusting for a set of covariates",paste0("(",covariates,")"), " It should, however, be noted that only a few basic properties can be inferred from this estimand",
