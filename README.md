@@ -19,7 +19,7 @@ in software output has the potential to elevate the quality of applied
 causal inference. We have therefore developed `CarefullyCausal`.
 Currently, `CarefullyCausal` can be used in the following settings:  
 
-- **Estimand**: Average Treatment Effect
+- **Estimand**: Average Treatment Effect\*
 - **Setting**: Fixed-exposure (i.e. not time-varying)
 - **Outcome of interest**: can be dichotomous or continuous
 - **Exposure of interest**: can be dichotomous, multicategorical (max 4
@@ -28,6 +28,8 @@ Currently, `CarefullyCausal` can be used in the following settings:
   log(odds), risk ratio, or odds ratio scale
 - **Estimators**: Outcome regression, IPTW, S-and-T-Standardization,
   TMLE
+
+\* It is the CATE for outcome regression when family is binomial.
 
 ## Installation
 
@@ -178,7 +180,7 @@ output <- CarefullyCausal(wt82_71 ~ qsmk + race + sex + education + smokeintensi
 # Print the output
 output
 #> 
-#> Estimand: Average Treatment Effect (Marginal) 
+#> Estimand: Average Treatment Effect 
 #> E[wt82_71^qsmk=1]  -  E[wt82_71^qsmk=0]
 #> 
 #> Adjustment Set: race, sex, education, smokeintensity, smokeyrs, wt71, exercise, active, age 
@@ -189,14 +191,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.448   0.000     Inf        2.484
-#> qsmk1 T-standardization     3.448      0.477   0.000     Inf        2.434
+#> qsmk1 S-standardization     3.381      0.479   0.000     Inf        2.466
+#> qsmk1 T-standardization     3.448      0.499   0.000     Inf        2.420
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.241
-#> qsmk1 T-standardization         4.305
+#> qsmk1 S-standardization         4.345
+#> qsmk1 T-standardization         4.378
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
