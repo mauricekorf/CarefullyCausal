@@ -30,7 +30,7 @@ The goal of `CarefullyCausal` is to support users with causal inference by provi
 * **Effect measures**: results can be reported on risk difference, log(odds), risk ratio, or odds ratio scale
 * **Estimators**: Outcome regression, IPTW, S-and-T-Standardization, TMLE
 
-\* \footnotesize It is the CATE for outcome regression when family is binomial. \normalsize
+\*  *It is the CATE for outcome regression when family is binomial* 
 
 
 ## Installation

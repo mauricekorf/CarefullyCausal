@@ -29,7 +29,7 @@ Currently, `CarefullyCausal` can be used in the following settings:
 - **Estimators**: Outcome regression, IPTW, S-and-T-Standardization,
   TMLE
 
-\* It is the CATE for outcome regression when family is binomial.
+\* *It is the CATE for outcome regression when family is binomial*
 
 ## Installation
 
@@ -191,14 +191,14 @@ output
 #>                          Estimate Std. Error P-value S-value 95%.CI.lower
 #> qsmk1 outcome regression    3.381      0.441   0.000  44.858        2.517
 #> qsmk1 IPTW                  3.318      0.494   0.000  35.198        2.351
-#> qsmk1 S-standardization     3.381      0.479   0.000     Inf        2.466
-#> qsmk1 T-standardization     3.448      0.499   0.000     Inf        2.420
+#> qsmk1 S-standardization     3.381      0.470   0.000     Inf        2.493
+#> qsmk1 T-standardization     3.448      0.489   0.000     Inf        2.527
 #> qsmk1 TMLE                  3.370      0.494   0.000     Inf        2.401
 #>                          95%.CI.upper
 #> qsmk1 outcome regression        4.246
 #> qsmk1 IPTW                      4.286
-#> qsmk1 S-standardization         4.345
-#> qsmk1 T-standardization         4.378
+#> qsmk1 S-standardization         4.335
+#> qsmk1 T-standardization         4.442
 #> qsmk1 TMLE                      4.339
 #> 
 #> Reference exposure level: 0 
