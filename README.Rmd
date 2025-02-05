@@ -24,10 +24,10 @@ knitr::opts_chunk$set(
 The goal of `CarefullyCausal` is to support users with causal inference by providing relevant information and explanations to help interpret an estimated effect as causal. Specifically, `CarefullyCausal` provides the user the causal estimand, results from different estimators that rely on distinct modeling assumptions, reports the causal assumptions alongside relevant diagnostics, and provides more detailed explanations and interpretations in the saved output. In our opinion, we believe that directly reporting and discussing the key elements of a causal analysis in software output has the potential to elevate the quality of applied causal inference. We have therefore developed `CarefullyCausal`. Currently, `CarefullyCausal` can be used in the following settings:\
 
 * **Estimand**: Average Treatment Effect\*
+* **Effect measures**: Estimand and results can be reported on risk difference, log(odds), risk ratio, or odds ratio scale
 * **Setting**: Fixed-exposure (i.e. not time-varying)
 * **Outcome of interest**: can be dichotomous or continuous
 * **Exposure of interest**: can be dichotomous, multicategorical (max 4 levels), or continuous
-* **Effect measures**: results can be reported on risk difference, log(odds), risk ratio, or odds ratio scale
 * **Estimators**: Outcome regression, IPTW, S-and-T-Standardization, TMLE
 
 \*  *It is the CATE for outcome regression when family is binomial* 
